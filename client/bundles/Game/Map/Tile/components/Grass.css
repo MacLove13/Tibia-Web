@@ -1,0 +1,22 @@
+.grass {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-image: url('./grass.png');
+}
+
+.grass1 {
+  background-position: 0 0;
+}
+
+.grass2 {
+  background-position: 0 -32px;
+}
+
+.grass3 {
+  background-position: -64px 0;
+}
+
+.grass4 {
+  background-position: -64px -32px;
+}

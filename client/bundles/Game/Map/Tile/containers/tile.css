@@ -1,0 +1,6 @@
+.square {
+  width: 32px;
+  height: 32px;
+  background-color: #000;
+  border: 1px solid #ddd;  /* Opcional: adicione uma borda se desejar */
+}
