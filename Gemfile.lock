@@ -101,6 +101,7 @@ GEM
     drb (2.1.1)
       ruby2_keywords
     erubi (1.12.0)
+    execjs (2.9.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -184,9 +185,16 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+    rainbow (3.1.1)
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
+    react_on_rails (13.4.0)
+      addressable
+      connection_pool
+      execjs (~> 2.5)
+      rails (>= 5.2)
+      rainbow (~> 3.0)
     regexp_parser (2.8.2)
     reline (0.3.9)
       io-console (~> 0.5)
@@ -240,6 +248,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.1)
+  react_on_rails (= 13.4)
   selenium-webdriver
   shakapacker (= 7.1)
   sprockets-rails
