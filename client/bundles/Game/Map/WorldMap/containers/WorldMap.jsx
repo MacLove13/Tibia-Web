@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { createConsumer } from '@rails/actioncable';
+import React, { useState, useEffect, useRef } from 'react';
+
 
 import './WorldMap.css';
 
 import GameCanvas from '../components/GameCanvas/GameCanvas';
+import Player from '../components/Player/Player';
 
-function WorldMap({  }) {
-  const [cable, setCable] = useState(null);
+function WorldMap({ cable, authCode }) {
+  const [player, setPlayer] = useState(
+    {
+      x: 0,
+      y: 0,
+      direction: 'up'
+    }
+  );
+  const playerRef = useRef(player);
   const [subscription, setSubscription] = useState(null);
-
-  const [player, setPlayer] = useState({ x: 0, y: 0 });  // posição inicial do jogador
   const [map, setMap] = useState({
     tiles: [
       { x: 0, y: 0, walkable: true, tileType: 'grass' },
@@ -31,46 +37,45 @@ function WorldMap({  }) {
     // ... outras propriedades do mapa aqui
   });
 
-  const handleReceived = (data) => {
-    if (data.action === 'move') {
-      console.log('move atualized');
-      console.log(data);
-      // Atualizar a posição do jogador baseada nos dados recebidos
-    }
-  };
+  const handleKeyDown = (event) => {
+    if (!subscription) return;
 
-  
+    const currentPlayer = playerRef.current;
+    let move = null;
+
+    if (event.key === 'w') {
+      move = "up"
+    }
+    else if (event.key === 's') {
+      move = "down"
+    }
+    else if (event.key === 'a') {
+      move = "left"
+    }
+    else if (event.key === 'd') {
+      move = "right"
+    }
+
+    if (!move) return;
+
+    subscription.perform('move', {
+      account: {
+        identifier: '4',
+        auth: authCode,
+      },
+      player: {
+        direction: move,
+        position: {
+          x: currentPlayer.x,
+          y: currentPlayer.y
+        }
+      }
+    });
+  };
 
   useEffect(() => {
-    const newCable = createConsumer('ws://localhost:3000/cable');
-    setCable(newCable);
-
-    const newSubscription = newCable.subscriptions.create(
-      { channel: 'GameChannel', game_id: 1 },
-      {
-        received: handleReceived,
-      }
-    );
-
-    setSubscription(newSubscription);
-
-    return () => {
-      newSubscription.unsubscribe();
-      newCable.disconnect();
-    };
-  }, []);
-
-
-
-  const handleKeyDown = (event) => {
-    console.log('Send move')
-    if (event.key === 'w') {
-
-      subscription.perform('move', { player: { direction: 'up' } });
-    }
-    // ... handle other keys
-  };
-
+    playerRef.current = player;
+  }, [player]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -79,13 +84,45 @@ function WorldMap({  }) {
     };
   }, [subscription]);
 
+  const handleReceived = (data) => {
+    if (data.action === 'disconnect') {
+      window.location = '/'
+      return;
+    }
+    if (data.action === 'move') {
+      console.log('move atualized');
+      console.log(data);
+      // Atualizar a posição do jogador baseada nos dados recebidos
 
+      setPlayer(oldPos => ({
+        ...oldPos,
+        x: data.new_position.x,
+        y: data.new_position.y,
+        direction: data.player.direction,
+      }));
+      console.log(data.new_position.y)
+      
+    }
+  };
 
+  useEffect(() => {
+    if (!cable) return;
 
+    const newSubscription = cable.subscriptions.create(
+      { channel: 'GameChannel', game_id: 1 },
+      {
+        received: handleReceived,
+      }
+    );
+    setSubscription(newSubscription);
+  }, [cable]);
 
+console.log(player)
   return (
     <>
-      <GameCanvas map={map} player={player} />
+      <GameCanvas map={map} player={player}>
+        
+      </GameCanvas>
     </>
   );
 }

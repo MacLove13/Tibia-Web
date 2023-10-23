@@ -1,0 +1,14 @@
+<h1>Characters#index</h1>
+
+<div>
+	<ul>
+		<% @characters.each do |char| %>
+			<li>
+				<%= link_to "#{char.name} (#{char.level})", "/characters/play/#{char.id}" %>
+			</li>
+		<% end %>
+	</ul>
+</div>
+<br/>
+
+<%= link_to 'Criar um personagem', '/characters/new' %>

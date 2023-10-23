@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
-  get 'hello_world', to: 'hello_world#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  resources :characters, only: [:new, :create]
+  namespace :characters do
+    get '/', action: :index
+    get 'play/:character_id', action: :play
+  end
+
+  devise_for :accounts, controllers: { registrations: 'accounts/registrations' }
+
+  get 'home/index'
+  get 'game', to: 'game#index'
+  
   get "up" => "rails/health#show", as: :rails_health_check
-
 
   mount ActionCable.server => '/cable'
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  root "home#index"
 end

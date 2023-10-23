@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './GameCanvas.css';
+import './GameCanvas.scss';
 
 import grassImage from './Tiles/grass.png';
+import Player from '../Player/Player';
+import TilesEditor from '../TilesEditor/TilesEditor';
 
 const TILE_SIZE = 32;
 
 function GameCanvas({ map, player }) {
   const [grass, setGrass] = useState(null);
+  const [renderPlayer, setRenderPlayer] = useState(false);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     const img = new Image();
@@ -14,12 +18,8 @@ function GameCanvas({ map, player }) {
     img.onload = () => {
       setGrass(img);
       draw();
-
-      console.log('Grass loaded')
     };
   }, []);
-
-  const canvasRef = useRef(null);
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
@@ -55,11 +55,8 @@ function GameCanvas({ map, player }) {
       }
     });
 
-    // Desenhando o personagem
-    const playerX = (player.x - left) * TILE_SIZE;
-    const playerY = (player.y - top) * TILE_SIZE;
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
+    setRenderPlayer(true);
+    console.log('Set Render Player')
   };
 
   useEffect(() => {
@@ -72,7 +69,22 @@ function GameCanvas({ map, player }) {
 
   useEffect(draw, [map, player]);
 
-  return <canvas className="game-canvas" ref={canvasRef}></canvas>;
+  return (
+    <>
+      <canvas className="game-canvas" ref={canvasRef}>
+        <Player
+          player={player}
+          canvasRef={canvasRef}
+          renderPlayer={renderPlayer}
+          setRenderPlayer={setRenderPlayer}
+        />
+
+        
+      </canvas>
+
+      <TilesEditor player={player} canvasRef={canvasRef} />
+    </>
+  );
 }
 
 export default GameCanvas;

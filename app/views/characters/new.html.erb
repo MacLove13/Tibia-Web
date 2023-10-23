@@ -1,0 +1,24 @@
+<!-- app/views/characters/new.html.erb -->
+<h1>Criar Personagem</h1>
+
+<%= form_with(model: @character, local: true) do |form| %>
+  <% if @character.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@character.errors.count, "error") %> proibiu este personagem de ser salvo:</h2>
+      <ul>
+        <% @character.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, "Nome" %><br>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Criar Personagem" %>
+  </div>
+<% end %>
