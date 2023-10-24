@@ -1,0 +1,12 @@
+.life-bar {
+  position: absolute;
+  width: 40px; // Ajuste a largura desejada
+  height: 5px; // Ajuste a altura desejada
+  background-color: gray;
+  border: 1px solid black;
+}
+
+.health {
+  height: 100%;
+  background-color: red;
+}

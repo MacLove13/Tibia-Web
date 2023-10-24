@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_23_181226) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_24_124020) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_23_181226) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_characters_on_account_id"
     t.index ["name"], name: "index_characters_on_name", unique: true
+  end
+
+  create_table "map_tiles", force: :cascade do |t|
+    t.integer "x"
+    t.integer "y"
+    t.boolean "walkable"
+    t.string "tileType"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "character_authentications", "accounts"

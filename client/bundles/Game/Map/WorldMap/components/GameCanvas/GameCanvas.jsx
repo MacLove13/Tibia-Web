@@ -7,17 +7,20 @@ import TilesEditor from '../TilesEditor/TilesEditor';
 
 const TILE_SIZE = 32;
 
-function GameCanvas({ map, player }) {
+function GameCanvas({ map, player, playerRef, subscription }) {
   const [grass, setGrass] = useState(null);
   const [renderPlayer, setRenderPlayer] = useState(false);
+  const [createdMap, setCreatedMap] = useState(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const img = new Image();
     img.src = grassImage;
     img.onload = () => {
-      setGrass(img);
-      draw();
+        setGrass(img);
+    };
+    img.onerror = (error) => {
+        console.error('Erro ao carregar a imagem:', error);
     };
   }, []);
 
@@ -25,14 +28,14 @@ function GameCanvas({ map, player }) {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    draw();
+    draw(grass);
+    console.log('reload canvas')
   }
 
-  const draw = () => {
-    if (!grass) {
-      console.log("Grass not loaded")
-      return;
-    }
+  const draw = (image = null) => {
+    if (image == null) return;
+    console.log('draw')
+    console.log(image)
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -48,7 +51,7 @@ function GameCanvas({ map, player }) {
         // Supondo que você queira um background-position de (0, 0) por padrão
         const bgX = 0;
         const bgY = 0;
-        ctx.drawImage(grass, bgX, bgY, TILE_SIZE, TILE_SIZE, x, y, TILE_SIZE, TILE_SIZE);
+        ctx.drawImage(image, bgX, bgY, TILE_SIZE, TILE_SIZE, x, y, TILE_SIZE, TILE_SIZE);
       } else {
         ctx.fillStyle = tile.walkable ? 'green' : 'gray';
         ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
@@ -56,7 +59,8 @@ function GameCanvas({ map, player }) {
     });
 
     setRenderPlayer(true);
-    console.log('Set Render Player')
+    setCreatedMap(true);
+    console.log('Map renderized')
   };
 
   useEffect(() => {
@@ -65,24 +69,30 @@ function GameCanvas({ map, player }) {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     }
-  }, []);
+  }, [grass]);
 
-  useEffect(draw, [map, player]);
+  useEffect(() => {
+    draw(grass);
+  }, [map, player, grass]);
 
   return (
     <>
       <canvas className="game-canvas" ref={canvasRef}>
-        <Player
+       <Player
           player={player}
           canvasRef={canvasRef}
           renderPlayer={renderPlayer}
           setRenderPlayer={setRenderPlayer}
-        />
+        /> 
 
         
       </canvas>
 
-      <TilesEditor player={player} canvasRef={canvasRef} />
+      { createdMap && <TilesEditor
+          playerRef={playerRef}
+          canvasRef={canvasRef}
+          subscription={subscription}
+        /> }
     </>
   );
 }

@@ -1,145 +1,45 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 
 import avatarImage from './Images/idle.png';
 import walkingImg from './Images/walking.png';
 
+import PlayerInfo from './components/PlayerInfo';
+
 const TILE_SIZE = 32;
-const baseSpeed = 300;
-
-const useWalkWithKeyboard = (player) => {
-	const [direction, setDirection] = React.useState('down');
-	const [walking, setWalking] = useState(false);
-  const [speed, setSpeed] = useState(baseSpeed);
-
-  const calculatedSpeed = useMemo(() => {
-    const finalSpeed = calculateSpeed(speed);
-    return finalSpeed;
-  }, [speed]);
-
-  useEffect(() => {
-    const fn = (event) => {
-      if (walking) {
-          return;
-      }
-
-      let newDirection;
-      let newPos = {};
-
-	      switch (`${event.key}`.toLowerCase()) {
-	          case 'w':
-	              newDirection = 'up';
-	              newPos = { x: player.x, y: player.y - 1 };
-	          break;
-	          case 's':
-	              newDirection = 'down';
-	              newPos = { x: player.x, y: player.y + 1 };
-	          break;
-	          case 'a':
-	              newDirection = 'left';
-	              newPos = { x: player.x - 1, y: player.y };
-	          break;
-	          case 'd':
-	              newDirection = 'right';
-	              newPos = { x: player.x + 1, y: player.y };
-	          break;
-	      }
-
-	      setDirection(newDirection);
-	      setWalking(true);
-
-	      // if (shouldNotCompleteMove(parsedMap.map, newPos)) {
-	      //     setWalking(false);
-	      //     return;
-	      // }
-
-	      // const { effects: sqmEffects, slow } = getFutureSqmInfo(parsedMap.map, newPos);
-	      // const finalEffects = { ...effects } || {};
-	      // sqmEffects.forEach((item) => {
-	      //     dispatch(setMessage(item.metadata.message));
-	      //     // if (finalEffects[item.name]) {
-	      //     //     clearTimeout(finalEffects[item.name].wipeTimeout);
-	      //     //     delete state.effects[item.name];
-	      //     //     setState(state => ({ ...state, effects: state.effects }));
-	      //     // }
-	      //     finalEffects[item.name] = {
-	      //         component: item.component,
-	      //         wipeTimeout: setTimeout(() => {
-	      //             delete effects[item.name];
-	      //             setEffects(effects);
-	      //         }, item.metadata.duration)
-	      //     };
-	      // }, {});
-
-	      // const speedTime = slow ? baseSpeed - (baseSpeed * slow) : baseSpeed;
-	      const speedTime = baseSpeed;
-	      setSpeed(speedTime);
-	      // setEffects(finalEffects);
-
-	      // dispatch(setPlayerPos(newPos));
-	    };
-
-	    window.addEventListener('keypress', fn);
-
-	    return () => {
-	        window.removeEventListener('keypress', fn);
-	    };
-	}, [walking]);
-
-  useEffect(() => {
-        if (walking === true) {
-            setTimeout(() => {
-                setWalking(false);
-            }, calculatedSpeed * 1000);
-        }
-    }, [walking]);
-
-  return {
-        direction,
-        walking,
-        calculatedSpeed
-    }
-}
-
-
-const calculateSpeed = speed => 1/(speed/100) * 1;
 
 function Player({ player, canvasRef, renderPlayer, setRenderPlayer }) {
-	const [avatar, setAvatar] = useState(null);
-	const [walkingImage, setWalkingImage] = useState(null);
+	const playerInfoRef = useRef();
+	const [lifeBarPosition, setLifeBarPosition] = useState({ x: 0, y: 0 });
 
-	
-
-	const {
-        walking,
-        calculatedSpeed,
-        direction,
-    } = useWalkWithKeyboard(player);
-  
-
-
-
-
-
-
+	const avatarRef = useRef(null);
+  const walkingImageRef = useRef(null);
 
 	useEffect(() => {
-    const img = new Image();
-    img.src = avatarImage;
-    img.onload = () => {
-      setAvatar(img);
-    };
+    if (!avatarRef.current) {
+      const img = new Image();
+      img.src = avatarImage;
+      img.onload = () => {
+        avatarRef.current = img;
+        setRenderPlayer(prev => !prev);
+      };
+	  }
 
-    const img2 = new Image();
-    img2.src = walkingImg;
-    img2.onload = () => {
-      setWalkingImage(img2);
-    };
+	  if (!walkingImageRef.current) {
+	    const img2 = new Image();
+	    img2.src = walkingImg;
+	    img2.onload = () => {
+	      walkingImageRef.current = img2;
+	      setRenderPlayer(prev => !prev);
+	    };
+	  }
   }, []);
 
   useEffect(() => {
-  	if (!renderPlayer) return;
-  	if (!img) return;
-  	if (!img2) return;
+  	// if (!renderPlayer) return;
+  	if (!avatarRef.current || !walkingImageRef.current) {
+      console.log('Images not loaded');
+      return;
+    }
   	
   	const canvas = canvasRef.current;
   	const ctx = canvas.getContext('2d');
@@ -149,17 +49,34 @@ function Player({ player, canvasRef, renderPlayer, setRenderPlayer }) {
     const playerX = (player.x - left) * TILE_SIZE;
     const playerY = (player.y - top) * TILE_SIZE;
 
-
     let bgX = 0;
     let bgY = 0;
-    ctx.drawImage(walkingImage, bgX, bgY, 64, 64, playerX - 8, playerY - 10, 64, 64);
+    ctx.drawImage(walkingImageRef.current, bgX, bgY, 64, 64, playerX - 40, playerY - 40, 64, 64);
 
-    // ctx.fillStyle = 'red';
-    // ctx.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
+    // Name
+    // ctx.fillStyle = 'white';
+    // ctx.font = '10px Arial';
+    // const textMetrics = ctx.measureText(player.name);
+    // const textWidth = textMetrics.width;
+    // const textX = playerX + (TILE_SIZE - textWidth) / 2 - 15;
+    // const textY = playerY - 12;
+    // ctx.fillText(player.name, textX, textY);
+
     setRenderPlayer(false);
+    setLifeBarPosition({ x: playerX, y: playerY });
+    console.log('Player Renderized')
   }, [renderPlayer]);
 
-  return null;  // O componente Player não retorna nenhum JSX
+  return (
+  	<>
+      <PlayerInfo
+      	x={lifeBarPosition.x}
+        y={lifeBarPosition.y}
+        currentHealth={player.currentHealth}
+        maxHealth={player.maxHealth}
+       />
+    </>
+  );
 }
 
 export default Player;

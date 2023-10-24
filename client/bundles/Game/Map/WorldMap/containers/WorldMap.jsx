@@ -4,11 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import './WorldMap.css';
 
 import GameCanvas from '../components/GameCanvas/GameCanvas';
+import Notification from '../components/Notification/Notification';
 import Player from '../components/Player/Player';
 
 function WorldMap({ cable, authCode }) {
   const [player, setPlayer] = useState(
     {
+      name: 'mac',
       x: 0,
       y: 0,
       direction: 'up'
@@ -16,26 +18,8 @@ function WorldMap({ cable, authCode }) {
   );
   const playerRef = useRef(player);
   const [subscription, setSubscription] = useState(null);
-  const [map, setMap] = useState({
-    tiles: [
-      { x: 0, y: 0, walkable: true, tileType: 'grass' },
-      { x: 0, y: 1, walkable: true, tileType: 'grass' },
-      { x: 0, y: 2, walkable: true, tileType: 'grass' },
-      { x: 0, y: 3, walkable: true, tileType: 'grass' },
-      { x: 0, y: 4, walkable: true, tileType: 'grass' },
-      { x: 0, y: 5, walkable: true, tileType: 'grass' },
-      { x: 1, y: 0, walkable: true, tileType: 'grass' },
-      { x: 1, y: 1, walkable: true, tileType: 'grass' },
-      { x: 1, y: 2, walkable: true, tileType: 'grass' },
-      { x: 1, y: 3, walkable: true, tileType: 'grass' },
-      { x: 1, y: 4, walkable: true, tileType: 'grass' },
-      { x: 1, y: 5, walkable: true, tileType: 'grass' },
-      { x: 2, y: 2, walkable: true, tileType: 'grass' },
-      { x: 3, y: 3, walkable: true, tileType: 'grass' },
-      { x: 5, y: 2, walkable: false, tileType: 'water' },
-    ],
-    // ... outras propriedades do mapa aqui
-  });
+  const [map, setMap] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   const handleKeyDown = (event) => {
     if (!subscription) return;
@@ -89,19 +73,23 @@ function WorldMap({ cable, authCode }) {
       window.location = '/'
       return;
     }
-    if (data.action === 'move') {
-      console.log('move atualized');
-      console.log(data);
-      // Atualizar a posição do jogador baseada nos dados recebidos
-
+    else if (data.action === 'update_map') {
+      setMap(data.map);
+    }
+    else if (data.action === 'move') {
       setPlayer(oldPos => ({
         ...oldPos,
         x: data.new_position.x,
         y: data.new_position.y,
         direction: data.player.direction,
       }));
-      console.log(data.new_position.y)
-      
+    }
+    else if (data.action === 'notification')
+    {
+      setNotification(data.message);
+      setTimeout(() => {
+        setNotification(null);
+      }, 2000);
     }
   };
 
@@ -112,17 +100,28 @@ function WorldMap({ cable, authCode }) {
       { channel: 'GameChannel', game_id: 1 },
       {
         received: handleReceived,
+        connected: () => {
+          newSubscription.perform('update_map');
+        },
+        disconnected: () => {
+          alert('A conexão com o servidor foi perdida.');
+        }
       }
     );
     setSubscription(newSubscription);
   }, [cable]);
 
-console.log(player)
   return (
     <>
-      <GameCanvas map={map} player={player}>
-        
-      </GameCanvas>
+      { map && <GameCanvas
+          map={map}
+          player={player}
+          playerRef={playerRef}
+          subscription={subscription}
+        />
+      }
+
+      { notification && <Notification message={notification} /> }
     </>
   );
 }
