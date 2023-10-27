@@ -105,6 +105,7 @@ function WorldMap({ cable, authCode }) {
         },
         disconnected: () => {
           alert('A conexão com o servidor foi perdida.');
+          window.location = '/'
         }
       }
     );

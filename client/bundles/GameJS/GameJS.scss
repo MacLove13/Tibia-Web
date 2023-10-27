@@ -1,0 +1,66 @@
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	color: rgb(26, 32, 44);
+	background: rgb(255, 255, 255);
+	transition: background-color 0.2s ease 0s;
+	line-height: 1.5;
+	background-color: black;
+
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+}
+
+#GameArea {
+		float: left;
+		width: 100vh;
+
+		.game-canvas {
+			display: block;
+			background-color: black;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 800px;
+			height: 600px;
+		}
+
+		.chat-input {
+			position: fixed;
+			bottom: 20px;
+			left: 20px;
+			width: 800px;
+			background-color: white;
+		}
+}
+
+progress {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		border: 1px solid black;
+		width: 100%;
+		height: 5px;
+		background-color: black;
+}
+
+progress::-webkit-progress-bar {
+		background-color: black;
+		border: 1px solid black;
+}
+
+#LevelProgressBar::-webkit-progress-value {
+		background-color: red;
+}
+
+#LevelProgressBar::-moz-progress-bar {
+		background-color: red;
+}
+
+#ManaBar::-webkit-progress-value {
+		background-color: blue;
+}
+
+#ManaBar::-moz-progress-bar {
+		background-color: blue;
+}

@@ -7,6 +7,19 @@ const { generateWebpackConfig, merge } = require('shakapacker');
 const baseClientWebpackConfig = generateWebpackConfig();
 
 const commonOptions = {
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: [
+          {
+            loader: 'ts-loader',
+          }
+        ],
+        exclude: /node_modules/,
+      },
+    ],
+  },
   resolve: {
     extensions: ['.css', '.ts', '.tsx'],
   },

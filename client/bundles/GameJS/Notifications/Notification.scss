@@ -1,0 +1,46 @@
+.notification {
+	min-width: 300px;
+	height: 80px;
+	position: absolute;
+	top: 30%;
+	left: 40%;
+	z-index: 9999;
+
+	background: url('../../Images/background.gif');
+
+	border: 2px solid #707070;
+  margin: 2px;
+  font-size: 12px;
+  color: #828586;
+  padding: 0;
+
+  .main {
+  	border: 2px solid #303435;
+	  height: 80px;
+
+  	.title {
+  		font-weight: 700;
+	    background: #303435;
+	    border-bottom: 1px solid #303435;
+	    position: relative;
+
+	    span {
+	    	position: absolute;
+	    	right: 0;
+	    	width: 15px;
+	    	height: 15px;
+	    	text-align: center;
+	    	background-color: black;
+	    	padding-right: 1px;
+	    	border: 1px solid #707070;
+	    	line-height: 15px;
+	    	cursor: pointer;
+	    }
+  	}
+
+  	.content {
+  		padding: 20px 0;
+  		overflow: hidden;
+  	}
+  }
+}

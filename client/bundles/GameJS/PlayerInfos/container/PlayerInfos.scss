@@ -1,0 +1,14 @@
+.player-infos {
+	float: right;
+	padding-top: 200px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-image: url(../Images/background.gif);
+  width: 20vh;
+  height: 100vh;
+}

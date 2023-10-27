@@ -1,0 +1,62 @@
+.right-menu {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #888;
+  z-index: 9999999;
+  background-image: url(../PlayerInfos/Images/background.gif);
+  width: 220px;
+
+  ul {
+  	margin: 0;
+  	padding: 0;
+  	border: 2px solid #2A2A2A;
+  	list-style-type: none;
+  
+  	li {
+  		font-size: 12px;
+  		font-weight: 550;
+		  padding: 2px 6px;
+		  cursor: pointer;
+		  color: white;
+		  border-bottom: none;
+
+		  text-shadow: 
+		    -1px -1px 0 #000,  
+		    1px -1px 0 #000,
+		    -1px 1px 0 #000,
+		    1px 1px 0 #000;
+		
+			&:hover {
+	  		background-color: rgb(214, 214, 214, .5)
+	  	}
+	  }
+
+	  hr {
+	  	margin: 0 1px;
+	  	border: none;
+	    height: 2px;
+	    position: relative;
+
+	    &:before {
+		    content: "";
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    height: 1px;
+		    background-color: #2A2A2A;
+			}
+
+			&:after {
+		    content: "";
+		    position: absolute;
+		    bottom: 0;
+		    left: 0;
+		    right: 0;
+		    height: 1px;
+		    background-color: #888;
+			}
+	  }
+	}
+}

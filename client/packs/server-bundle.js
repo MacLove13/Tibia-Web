@@ -1,8 +1,9 @@
 import ReactOnRails from 'react-on-rails';
 
 import GameView from '../bundles/GameView/components/GameViewServer';
+import GameJS from '../bundles/GameJS/GameJSServer';
 
-// This is how react_on_rails can see the GameView in the browser.
 ReactOnRails.register({
   GameView,
+  GameJS
 });
