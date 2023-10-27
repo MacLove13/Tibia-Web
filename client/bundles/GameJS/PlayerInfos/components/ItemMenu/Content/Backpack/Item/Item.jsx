@@ -8,7 +8,12 @@ import Game, { EventType } from 'bundles/GameJS/store/GameInit';
 import RightMenu from 'bundles/GameJS/RightMenu/RightMenu';
 import RightMenuItem from 'bundles/GameJS/RightMenu/RightMenuItem';
 
-const ConstructMenu = ({ id }) => {
+const ConstructMenu = ({ id, useItem }) => {
+
+	const onClickToUse = () => {
+		console.log('Usando Item')
+		useItem();
+	}
 
 	useEffect(() => {
 		window.addEventListener('mousedown', (event) => {
@@ -21,6 +26,7 @@ const ConstructMenu = ({ id }) => {
 
 	return (
 		<RightMenu id={id}>
+			<RightMenuItem name="Use" action={onClickToUse} />
 			<RightMenuItem name="Look" />
 		</RightMenu>
 	)
@@ -35,6 +41,13 @@ const Item = ({ }) => {
 	  })
 	};
 
+	const useItem = () => {
+		console.log('Usando Item')
+		gameInstance.PublishEvent(EventType.PlayerSelfHeal, {
+	    Points: 30
+	  })
+	}
+
 	const showContextMenu = (event) => {
 		const menu = document.getElementById('custom-menu');
 		menu.style.display = 'block';
@@ -46,7 +59,7 @@ const Item = ({ }) => {
 
 	return (
 		<div className="backpack">
-			<ConstructMenu id="custom-menu" />
+			<ConstructMenu id="custom-menu" useItem={useItem} />
 			<div
 				className="slot"
 				onClick={onClickHeal}

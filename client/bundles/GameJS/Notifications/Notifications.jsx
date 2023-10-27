@@ -35,31 +35,31 @@ const Notifications = ({ }) => {
 	};
 
 	const GetNotifications = () => {
-    let newNotifications = gameInstance.init.networkSystem.GetNotifications().map((notification) => {
+	    let newNotifications = gameInstance.init.networkSystem.GetNotifications().map((notification) => {
 
-    	notificationIdRef.current++;
-      highestZIndexRef.current++;
+	    	notificationIdRef.current++;
+	      highestZIndexRef.current++;
 
-	    return {
-	      ...notification,
-	      Id: notificationIdRef.current,
-	      zIndex: highestZIndexRef.current,
-	    };
-		});
+		    return {
+		      ...notification,
+		      Id: notificationIdRef.current,
+		      zIndex: highestZIndexRef.current,
+		    };
+			});
 
-	  setNotifications(prevNotifications => {
-	    // Filtrar para remover a notificação com o idToRemove
-	    const updatedPrevNotifications = prevNotifications.filter(notification => !notificationsToRemove.current.includes(notification.Id));
-	    // Concatenar as novas notificações
-	    return [...updatedPrevNotifications, ...newNotifications];
-	  });
+		  setNotifications(prevNotifications => {
+		    // Filtrar para remover a notificação com o idToRemove
+		    const updatedPrevNotifications = prevNotifications.filter(notification => !notificationsToRemove.current.includes(notification.Id));
+		    // Concatenar as novas notificações
+		    return [...updatedPrevNotifications, ...newNotifications];
+		  });
 
-    gameInstance.init.networkSystem.ClearNotifications();
+	    gameInstance.init.networkSystem.ClearNotifications();
 	}
 
 	useEffect(() => {
 		const intervalId = setInterval(GetNotifications, 1000);
-    return () => clearInterval(intervalId);
+    	return () => clearInterval(intervalId);
 	}, []);
 
 	return (

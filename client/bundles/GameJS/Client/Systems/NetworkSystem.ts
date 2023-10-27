@@ -1,3 +1,4 @@
+import io from 'socket.io-client';
 import {
     CameraComponent,
     CharacterAnimationComponent, CharacterMessageComponent,
@@ -263,8 +264,6 @@ export class NetworkSystem {
 
                 if (this.entityToModification[i].Type === ModType.SendNotification) {
                     this.notifications.push(this.entityToModification[i].Data.Message);
-
-                    console.log(this.notifications);
                 }
             }
         }
