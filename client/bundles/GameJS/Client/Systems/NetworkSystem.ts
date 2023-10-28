@@ -29,7 +29,7 @@ export class NetworkSystem {
     ];
 
     connect(url = null) {
-        url = 'http://localhost:2137'
+        url = 'http://192.168.0.22:2137'
 
         if (!url) {
             this.socket = io.connect();
@@ -193,6 +193,11 @@ export class NetworkSystem {
         var healEventList = world.GetEventByType(Events.PlayerSelfHeal);
         for (var i = 0; i < healEventList.length; i++) {
             this.socket.emit("PlayerHeal", healEventList[i].Payload);
+        }
+
+        var useItemEventList = world.GetEventByType(Events.UseItem);
+        for (var i = 0; i < useItemEventList.length; i++) {
+            this.socket.emit("UseItem", useItemEventList[i].Payload);
         }
     }
 

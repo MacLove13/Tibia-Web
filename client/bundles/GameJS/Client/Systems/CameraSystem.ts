@@ -18,8 +18,6 @@ export class CameraSystem implements ISystem {
         }
     }
 
-
-
     GetCamerasList(): Array<Vector2D> {
         var cameralist = this.cameraPosList;
         this.cameraPosList = [];

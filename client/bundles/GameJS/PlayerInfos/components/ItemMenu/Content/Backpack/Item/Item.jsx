@@ -10,23 +10,30 @@ import RightMenuItem from 'bundles/GameJS/RightMenu/RightMenuItem';
 
 const ConstructMenu = ({ id, useItem }) => {
 
-	const onClickToUse = () => {
-		console.log('Usando Item')
-		useItem();
-	}
+	const closeMenu = () => {
+		const menu = document.getElementById(id);
+	  menu.style.display = 'none';
+	};
 
 	useEffect(() => {
+		// window.addEventListener('mousedown', (event) => {
+		//   const menu = document.getElementById(id);
+		//   if (event.button !== 2) {  // Se não for um clique com o botão direito
+		//     menu.style.display = 'none';
+		//   }
+		// });
+
 		window.addEventListener('mousedown', (event) => {
 		  const menu = document.getElementById(id);
-		  if (event.button !== 2) {  // Se não for um clique com o botão direito
-		    menu.style.display = 'none';
+		  if (!menu.contains(event.target)) {  // Verifica se o clique não foi dentro do menu
+		    closeMenu();
 		  }
 		});
 	});
 
 	return (
 		<RightMenu id={id}>
-			<RightMenuItem name="Use" action={onClickToUse} />
+			<RightMenuItem name="Use" action={useItem} />
 			<RightMenuItem name="Look" />
 		</RightMenu>
 	)
@@ -43,7 +50,7 @@ const Item = ({ }) => {
 
 	const useItem = () => {
 		console.log('Usando Item')
-		gameInstance.PublishEvent(EventType.PlayerSelfHeal, {
+		gameInstance.PublishEvent(EventType.UseItem, {
 	    Points: 30
 	  })
 	}

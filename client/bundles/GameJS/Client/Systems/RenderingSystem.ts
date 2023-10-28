@@ -16,8 +16,8 @@ export class RenderingSystem implements ISystem {
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
     private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
 
-    private screenSizeX = 800;
-    private screenSizeY = 600;
+    private screenSizeX = 1024;
+    private screenSizeY = 768;
 
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
@@ -111,7 +111,6 @@ export class RenderingSystem implements ISystem {
         this.renderer.RenderAll();
     }
 
-
     private DrawSprite(index: number, posx: number, posy: number) {
         this.renderer.DrawSpr((index % 32) * 32, ((index / 32) | 0) * 32, 32, 32, posx, posy, config.TileSize, config.TileSize);
     }
@@ -130,11 +129,11 @@ export class RenderingSystem implements ISystem {
     private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: number[]) {
         this.renderer.SetHight(-0.0001);
         for (var i = 0; i < this.mapsToRender.length; i++) {
-            var startX = ((cameraPos.x - 400) / config.TileSize) | 0;
+            var startX = ((cameraPos.x - (this.screenSizeX / 2)) / config.TileSize) | 0;
 
             var endX = (startX + this.screenSizeX / config.TileSize) | 0;
             endX += 1;
-            var startY = ((cameraPos.y - 300) / config.TileSize) | 0;
+            var startY = ((cameraPos.y - ( this.screenSizeY / 2 )) / config.TileSize) | 0;
 
             var endY = (startY + this.screenSizeY / config.TileSize) | 0;
             endY += 2;

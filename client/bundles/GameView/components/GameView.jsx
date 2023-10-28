@@ -9,7 +9,7 @@ const GameView = (props) => {
   const [cable, setCable] = useState(null);
 
   useEffect(() => {
-    const newCable = createConsumer('ws://localhost:3000/cable');
+    const newCable = createConsumer('ws://192.168.0.22:3000/cable');
     setCable(newCable);
     setAuthCode(props.auth);
   }, []);

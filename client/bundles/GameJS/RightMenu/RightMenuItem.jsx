@@ -1,12 +1,11 @@
 import React from 'react';
 import './RightMenu.scss';
 
-const RightMenuItem = ({ name, action = null }) => {
+const RightMenuItem = ({ name, action }) => {
 
 	return (
 		<>
-			{ action == null && <li onClick={() => alert('oi')}>{name}</li> }
-			{ action != null && <li onClick={() => alert('oi')}>{name}</li> }
+			<li onClick={action}>{name} 1</li>
 		</>
 	)
 };

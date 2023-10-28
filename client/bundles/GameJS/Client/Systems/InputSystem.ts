@@ -182,6 +182,8 @@ export class InputSystem implements ISystem {
                 y -= this.canvas.offsetTop;
 
                 this.mouseClicks.push({ x: x, y: y });
+
+                console.log('X: ' + x + " Y: " + y)
             });
         }
 

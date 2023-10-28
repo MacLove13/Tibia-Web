@@ -52,7 +52,7 @@ export class World {
 }
 
 
-export enum Events { PlayerMove, PlayerMessage, PlayerTarget, TxtSpawn, PlayerSelfHeal };
+export enum Events { PlayerMove, PlayerMessage, PlayerTarget, TxtSpawn, PlayerSelfHeal, UseItem };
 class GameEvent {
     EventType: Events;
     Subject: GameObj;
