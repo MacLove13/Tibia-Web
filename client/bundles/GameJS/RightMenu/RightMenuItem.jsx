@@ -3,9 +3,19 @@ import './RightMenu.scss';
 
 const RightMenuItem = ({ name, action }) => {
 
+	const closeMenu = (event) => {
+		const menu = event.target.parentNode.parentNode;
+	  menu.style.display = 'none';
+	};
+
+	const OnClick = (e) => {
+		closeMenu(e);
+		action();
+	};
+
 	return (
 		<>
-			<li onClick={action}>{name} 1</li>
+			<li onClick={OnClick}>{name}</li>
 		</>
 	)
 };

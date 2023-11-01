@@ -2,6 +2,8 @@
 
 class DeviseCreateAccounts < ActiveRecord::Migration[7.1]
   def change
+    enable_extension 'uuid-ossp'
+
     create_table :accounts do |t|
       ## Database authenticatable
       t.string :username,           null: false, default: ""
@@ -33,6 +35,7 @@ class DeviseCreateAccounts < ActiveRecord::Migration[7.1]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
+      t.uuid :uuid, default: 'uuid_generate_v4()', null: false
 
       t.timestamps null: false
     end
@@ -42,5 +45,7 @@ class DeviseCreateAccounts < ActiveRecord::Migration[7.1]
     add_index :accounts, :reset_password_token, unique: true
     add_index :accounts, :confirmation_token,   unique: true
     # add_index :accounts, :unlock_token,         unique: true
+
+    add_index :accounts, :uuid,   unique: true
   end
 end

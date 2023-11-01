@@ -36,6 +36,12 @@
 
 				    cursor: pointer;
 
+				    .item {
+				    	height: 32px;
+				    	width: 32px;
+				    	background: transparent;
+				    	background-size: cover;
+				    }
 
 				    span {
 					    position: absolute;

@@ -6,7 +6,7 @@ import RightMenuItem from './RightMenuItem';
 const RightMenu = ({ children, id }) => {
 
 	return (
-		<div id="custom-menu" className="right-menu">
+		<div id={id} className="right-menu">
 			<ul>
 			  {children}
 			  <li>Inspect</li>

@@ -4,8 +4,6 @@ import './Notification.scss';
 import Game, { EventType } from 'bundles/GameJS/store/GameInit';
 import GameNotification from './GameNotification';
 
-
-
 const Notifications = ({ }) => {
 	const [notifications, setNotifications] = useState([]);
 	const notificationsToRemove = React.useRef([]);
@@ -27,7 +25,7 @@ const Notifications = ({ }) => {
         return notification;
     });
     
-    setNotifications(updatedNotifications);
+    	setNotifications(updatedNotifications);
 	};
 
 	const removeNotification = (nId) => {
@@ -48,9 +46,7 @@ const Notifications = ({ }) => {
 			});
 
 		  setNotifications(prevNotifications => {
-		    // Filtrar para remover a notificação com o idToRemove
 		    const updatedPrevNotifications = prevNotifications.filter(notification => !notificationsToRemove.current.includes(notification.Id));
-		    // Concatenar as novas notificações
 		    return [...updatedPrevNotifications, ...newNotifications];
 		  });
 

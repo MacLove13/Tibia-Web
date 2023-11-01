@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  resources :item_templates
   resources :characters, only: [:new, :create]
   namespace :characters do
     get '/', action: :index

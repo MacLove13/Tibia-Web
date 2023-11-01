@@ -20,9 +20,9 @@ export class Game {
 		this.init = InstancedGameInit;
 	}
 
-	Start() {
+	Start(auth: string) {
     if (this.started) return;
-    this.init.Process();
+    this.init.Process(auth);
     this.started = true;
   }
 

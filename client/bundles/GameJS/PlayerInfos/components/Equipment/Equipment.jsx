@@ -1,16 +1,19 @@
 import React from 'react';
+
 import './Equipment.scss';
 
 import EmptyAmulet from './Images/item/empty_amulet.gif';
-import EmptySword from './Images/item/empty_sword.gif';
 import EmptyRing from './Images/item/empty_ring.gif';
 import EmptyHelmet from './Images/item/empty_helmet.gif';
 import EmptyArmor from './Images/item/empty_armor.gif';
 import EmptyLegs from './Images/item/empty_legs.gif';
 import EmptyBoots from './Images/item/empty_boots.gif';
-import Backpack from './Images/backpack/default.gif';
+
 import EmptyShield from './Images/item/empty_shield.gif';
 import EmptyAmmo from './Images/item/empty_ammo.gif';
+
+import Weapon from './Slot/Weapon';
+import Backpack from './Slot/Backpack';
 
 const Equipment = () => {
 
@@ -20,9 +23,7 @@ const Equipment = () => {
 				<div className="slot">
 					<img src={EmptyAmulet} alt="necklace" />
 				</div>
-				<div className="slot">
-					<img src={EmptySword} alt="left-hand" />
-				</div>
+				<Weapon />
 				<div className="slot">
 					<img src={EmptyRing} alt="ring" />
 				</div>
@@ -43,9 +44,7 @@ const Equipment = () => {
 			</div>
 
 			<div className="column">
-				<div className="slot">
-					<img src={Backpack} alt="backpack" />
-				</div>
+				<Backpack />
 				<div className="slot">
 					<img src={EmptyShield} alt="shield" />
 				</div>

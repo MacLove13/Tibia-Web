@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Backpack.scss';
 
 // import BackpackImage from '../../../../components/Equipment/Images/backpack/default.gif';
@@ -17,31 +17,23 @@ const EmptySlot = ({ }) => {
 	)
 };
 
-const Backpack = ({ }) => {
-	
+const Backpack = ({ slots, items }) => {
+	const itemsCount = items.length;
+	const emptySlotsCount = slots - itemsCount;
+
+	const emptySlotsComponents = [...Array(emptySlotsCount)].map((_, index) => (
+	  <EmptySlot key={`empty-slot-${index}`} />
+	));
+
 	return (
 		<>
-			
 			<div className="menu-title">
 				{/*<img width="14" src={BackpackImage} alt="/images/coin/backpack.gif" />*/}
 				<span>Backpack</span>
 			</div>
 			<div className="menu-body slot-list">
-				<Item />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
-				<EmptySlot />
+				{ itemsCount > 0 && items.map((item) => <Item key={`item-${item.item.uuid}`} item={item} /> )}
+				{emptySlotsComponents}
 			</div>
 		</>
 	)

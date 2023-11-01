@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+ItemTemplate.create(
+	name: 'Mochila',
+	description: 'Mochila comum de um viajante.',
+	type: 1,
+	vocation: 0,
+	image: 'Backpacks/Default.gif'
+)

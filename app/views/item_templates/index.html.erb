@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Items</h1>
+
+<div id="items">
+  <% @item_templates.each do |item_template| %>
+    <%= render item_template %>
+    <p>
+      <%= link_to "Show this item", item_template %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New item", new_item_template_path %>

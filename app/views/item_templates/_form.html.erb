@@ -1,0 +1,77 @@
+<%= form_with(model: item_template) do |form| %>
+  <% if item_template.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(item_template.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+        <% item_template.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :type %>
+    <%= form.select :type, ItemTemplate.types.keys.map { |type| [type.titleize, type] }, { include_blank: 'Select Type' } %>
+  </div>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :min_level %>
+    <%= form.number_field :min_level %>
+  </div>
+
+  <div>
+    <%= form.label :vocation %>
+    <%= form.select :vocation, ItemTemplate.vocations.keys.map { |vocation| [vocation.titleize, vocation] }, { include_blank: 'Select Type' } %>
+  </div>
+
+  <div>
+    <%= form.label :two_hands %>
+    <%= form.check_box :two_hands %>
+  </div>
+
+  <div>
+    <%= form.label :attack %>
+    <%= form.number_field :attack %>
+  </div>
+
+  <div>
+    <%= form.label :weight %>
+    <%= form.number_field :weight %>
+  </div>
+
+  <div>
+    <%= form.label :mergeable %>
+    <%= form.check_box :mergeable %>
+  </div>
+
+  <div>
+    <%= form.label :heal_hp %>
+    <%= form.number_field :heal_hp %>
+  </div>
+
+  <div>
+    <%= form.label :image %>
+    <%= form.text_field :image %>
+  </div>
+
+  <div>
+    <%= form.label :defense %>
+    <%= form.number_field :defense %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

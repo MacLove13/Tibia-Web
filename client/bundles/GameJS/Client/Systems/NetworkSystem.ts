@@ -28,8 +28,8 @@ export class NetworkSystem {
         }
     ];
 
-    connect(url = null) {
-        url = 'http://192.168.0.22:2137'
+    connect(auth: string) {
+        const url = 'http://192.168.0.22:2137'
 
         if (!url) {
             this.socket = io.connect();
@@ -38,7 +38,7 @@ export class NetworkSystem {
         }
 
         this.socket.emit("onPlayerConnect", {
-            name: "Mac"
+            Auth: auth
         });
 
         this.Setup();
@@ -74,6 +74,14 @@ export class NetworkSystem {
         this.ModifyEntities(world);
 
         this.cleanup();
+    }
+
+    GetSocket() {
+        return this.socket;
+    }
+
+    EmitServer(eventName: string, payload: any) {
+        this.socket.emit(eventName, payload);
     }
 
     private Setup() {
@@ -173,6 +181,10 @@ export class NetworkSystem {
                 this.EntityToRemove.push(data[i]);
             }
         });
+
+        this.socket.on("SetMainBackpack", (data: { image: string; slots: number; uuid: string; item_template: { Name: string; Attack: number; } }) => {
+            console.log(data);
+        });
     }
 
     private ProcessEvents(world: World) {
@@ -261,7 +273,7 @@ export class NetworkSystem {
                             inputComponent.Level = this.entityToModification[i].Data.NextLvl;
                             inputComponent.Experience = 0;
                         } else {
-                            inputComponent.Experience += this.entityToModification[i].Data.Exp;
+                            inputComponent.Experience = this.entityToModification[i].Data.Exp;
                         }
                     }
                 }

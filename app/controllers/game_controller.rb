@@ -7,7 +7,7 @@ class GameController < ApplicationController
 
   def index
     @char_code = character_code
-    @game_props = { auth: @char_code }
+    @game_props = { account_id: current_account.id, auth: @char_code }
   end
 
   private

@@ -1,79 +1,52 @@
 import React, { useEffect } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 import '../Backpack.scss';
-
-import Coins100 from 'bundles/Images/items/potions/1.png';
 
 import Game, { EventType } from 'bundles/GameJS/store/GameInit';
 
-import RightMenu from 'bundles/GameJS/RightMenu/RightMenu';
-import RightMenuItem from 'bundles/GameJS/RightMenu/RightMenuItem';
+import ContextMenuItem from 'bundles/GameJS/PlayerInfos/components/ItemMenu/ContextMenuItem';
 
-const ConstructMenu = ({ id, useItem }) => {
-
-	const closeMenu = () => {
-		const menu = document.getElementById(id);
-	  menu.style.display = 'none';
-	};
-
-	useEffect(() => {
-		// window.addEventListener('mousedown', (event) => {
-		//   const menu = document.getElementById(id);
-		//   if (event.button !== 2) {  // Se não for um clique com o botão direito
-		//     menu.style.display = 'none';
-		//   }
-		// });
-
-		window.addEventListener('mousedown', (event) => {
-		  const menu = document.getElementById(id);
-		  if (!menu.contains(event.target)) {  // Verifica se o clique não foi dentro do menu
-		    closeMenu();
-		  }
-		});
-	});
-
-	return (
-		<RightMenu id={id}>
-			<RightMenuItem name="Use" action={useItem} />
-			<RightMenuItem name="Look" />
-		</RightMenu>
-	)
-};
-
-const Item = ({ }) => {
+const Item = ({ item }) => {
 	var gameInstance = new Game();
+	const [, drag] = useDrag(() => (item));
+	const uItem = item.item;
 
-	const onClickHeal = () => {
-		gameInstance.PublishEvent(EventType.PlayerSelfHeal, {
-	    Points: 30
-	  })
+	const onClickItem = () => {
+
+		if (uItem.type == 'Food' && uItem.healPoints != null) {
+			gameInstance.PublishEvent(EventType.PlayerSelfHeal, {
+		    Points: uItem.healPoints
+		  })
+		}
 	};
 
 	const useItem = () => {
-		console.log('Usando Item')
-		gameInstance.PublishEvent(EventType.UseItem, {
-	    Points: 30
-	  })
+		gameInstance.init.networkSystem.EmitServer("UseItem", {
+	    ItemUuid: uItem.uuid
+	  });
 	}
 
 	const showContextMenu = (event) => {
-		const menu = document.getElementById('custom-menu');
+		const menu = document.getElementById(`item-menu-${uItem.id}`);
+		if (menu == null) return;
 		menu.style.display = 'block';
 		menu.style.left = `${event.pageX - 220}px`;
 		menu.style.top = `${event.pageY}px`;
 	};
 
-	const imageUrl = require('bundles/Images/items/potions/1.gif');
+	const imageUrl = require(`bundles/Images/${uItem.image}`);
 
 	return (
 		<div className="backpack">
-			<ConstructMenu id="custom-menu" useItem={useItem} />
+			<ContextMenuItem id={`item-menu-${uItem.id}`} type={uItem.type} useItem={useItem} />
 			<div
 				className="slot"
-				onClick={onClickHeal}
+				onClick={onClickItem}
 				onContextMenu={showContextMenu}
-				style={{ backgroundImage: `url(${imageUrl})` }}
+				ref={drag}
 			>
-				<span>51</span>
+				<div className="item" style={{ backgroundImage: `url(${imageUrl})` }} />
+				<span>{uItem.quantity}</span>
 			</div>
 		</div>
 	)
