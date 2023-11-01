@@ -22,7 +22,7 @@ const Enemy = ({ enemy, isTarget }) => {
 				<img height="21" src={MonsterRat} alt={enemy.name} />
 			</div>
 			<div className="data">
-				<span>{enemy.name} {enemy.distance}</span>
+				<span>{enemy.name}</span>
 				<div className="life">
 					<div className="bar" style={{ marginTop: '1px', borderTop: '3px solid green', width: `${health}%` }}></div>
 				</div>

@@ -24,7 +24,7 @@ export class NetworkSystem {
     private notifications = [
         {
             Title: 'Tibia on Rails',
-            Content: 'Bem vindo a versão Alpha 0'
+            Content: 'Bem vindo a Alpha v0.1'
         }
     ];
 
@@ -36,6 +36,10 @@ export class NetworkSystem {
         } else {
             this.socket = io.connect(url);
         }
+
+        this.socket.emit("onPlayerConnect", {
+            name: "Mac"
+        });
 
         this.Setup();
     }
@@ -163,7 +167,6 @@ export class NetworkSystem {
             this.newEntityList.push(gameObj);
         });
 
-
         this.socket.on("DeleteCharacters", (data: any[]) => {
            
             for (var i = 0; i < data.length; i++) {
@@ -209,6 +212,7 @@ export class NetworkSystem {
 
             for (var i = 0; i < this.entityToModification.length; i++) {
                 if (this.entityToModification[i].ID !== gameObjList[j].ID) continue;
+
                 if (this.entityToModification[i].Type === ModType.Move) {
                     if (!movement) continue;
                     movement.SetTarget(this.entityToModification[i].Data.Pos.x, this.entityToModification[i].Data.Pos.y);

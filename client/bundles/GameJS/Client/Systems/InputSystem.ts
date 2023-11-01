@@ -108,7 +108,7 @@ export class InputSystem implements ISystem {
                 if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
                     if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
                         var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
-                        (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
+                        // (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted = !targeted
 
                         var inputComponent = (< InputComponent > gameObj.ComponentList[Componenets.Input]);
                         if (!targeted) {

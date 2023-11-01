@@ -46,7 +46,7 @@ const GameJS = (props) => {
   return (
     <>
       <div id="GameArea">
-        <canvas id="GameCanvas" className="game-canvas" width="800" height="600" ref={canvasRef}></canvas>
+        <canvas id="GameCanvas" className="game-canvas" width="800" height="600" ref={canvasRef} />
         <input type="text" id="ChatInput" className="chat-input" onChange={changeInputText} value={inputText} />
       </div>
 

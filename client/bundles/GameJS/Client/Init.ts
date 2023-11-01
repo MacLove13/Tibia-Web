@@ -50,7 +50,6 @@ export class Init {
         const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
         renderingSystem = new RenderingSystem(canvas, sprites);
 
-        
         this.gameObj.ID = 1541515125;
         this.gameObj.AddComponent(new PositionComponent(0, 0));
         this.gameObj.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
