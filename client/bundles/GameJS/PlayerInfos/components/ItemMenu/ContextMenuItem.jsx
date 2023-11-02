@@ -53,7 +53,7 @@ const ContextMenuItem = ({ id, type, useItem, item_uuid }) => {
 	return (
 		<RightMenu id={id}>
 			{ type == 'Food' || type == 0 && <FoodMenu useItem={useItem} item_uuid={item_uuid} /> }
-			{ type == 'Sword' && <WeaponMenu useItem={useItem} /> }
+			{ type == 'Sword' || type == 4 && <WeaponMenu useItem={useItem} /> }
 			{ type == 'Backpack' && <BackpackMenu useItem={useItem} /> }
 		</RightMenu>
 	)
