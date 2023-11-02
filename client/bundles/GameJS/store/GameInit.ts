@@ -6,7 +6,7 @@ var InstancedGameInit = null;
 export type EventType = Events;  // Alias para o tipo Events
 export var EventType = Events;  // Alias para o valor Events
 
-export class Game {
+class Game {
 	started;
 	init: Init;
 
@@ -20,9 +20,9 @@ export class Game {
 		this.init = InstancedGameInit;
 	}
 
-	Start(auth: string) {
+	Start(auth: string, setIsInitializedAll) {
     if (this.started) return;
-    this.init.Process(auth);
+    this.init.Process(auth, setIsInitializedAll);
     this.started = true;
   }
 
@@ -31,4 +31,5 @@ export class Game {
   }
 }
 
-export default Game;
+const GameInstance = new Game();
+export default GameInstance;

@@ -9,7 +9,7 @@ import Skills from 'bundles/GameJS/PlayerInfos/components/ItemMenu/Content/Skill
 import Backpack from 'bundles/GameJS/PlayerInfos/components/ItemMenu/Content/Backpack/Backpack';
 
 
-import Game, { EventType } from 'bundles/GameJS/store/GameInit';
+import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
 
 
 const PlayerInfos = ({ Init }) => {
@@ -24,51 +24,51 @@ const PlayerInfos = ({ Init }) => {
 		}
 	]);
 
-  const gameInstance = new Game();
+  const socket = GameInstance.init.networkSystem.GetSocket();
 
-  const socket = gameInstance.init.networkSystem.GetSocket();
+  useEffect(() => {
+	  socket.on("character:showBag", (data) => {
+		  console.log(data);
 
-  socket.on("character:showBag", (data) => {
-	  console.log(data);
-
-	  setOpenedWindows(prevWinds => {
-		  const existingWindowIndex = prevWinds.findIndex(wind => wind.uuid === data.uuid);
-		    
-		  if (existingWindowIndex > -1) {
-		    return prevWinds.map((wind, index) => {
-		      if (index === existingWindowIndex) {
-		        return {
-		          ...wind,
-		          items: data.Data,
-		          slots: data.slots,
-		        };
-		      }
-		      return wind;
-		    });
-		  }
-		    
-		  return [
-		    ...prevWinds,
-		    {
-		      uuid: data.uuid,
-		      slots: data.slots,
-		      type: 'Backpack',
-		      maxHeight: 176,
-		      items: data.Data
-		    }
-		  ];
+		  setOpenedWindows(prevWinds => {
+			  const existingWindowIndex = prevWinds.findIndex(wind => wind.uuid === data.uuid);
+			    
+			  if (existingWindowIndex > -1) {
+			    return prevWinds.map((wind, index) => {
+			      if (index === existingWindowIndex) {
+			        return {
+			          ...wind,
+			          items: data.Data,
+			          slots: data.slots,
+			        };
+			      }
+			      return wind;
+			    });
+			  }
+			    
+			  return [
+			    ...prevWinds,
+			    {
+			      uuid: data.uuid,
+			      slots: data.slots,
+			      type: 'Backpack',
+			      maxHeight: 176,
+			      items: data.Data
+			    }
+			  ];
+			});
 		});
-	});
+	}, []);
 
 	return (
 		<div className="player-infos">
 			<Equipment />
 
-			{ openedWindows.map(wind => {
+			{ openedWindows.map((wind, index) => {
 
 				if (wind.type == 'Battle') {
 					return (
-						<ItemMenu maxHeight={wind.maxHeight}>
+						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight}>
 							<Battle />
 						</ItemMenu>
 					)
@@ -76,16 +76,19 @@ const PlayerInfos = ({ Init }) => {
 
 				else if (wind.type == 'Skills') {
 					return (
-						<ItemMenu maxHeight={wind.maxHeight}>
+						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight}>
 							<Skills />
 						</ItemMenu>
 					)
 				}
 
 				else if (wind.type == 'Backpack') {
+
+					console.log('Open backpack')
+
 					return (
-						<ItemMenu maxHeight={wind.maxHeight}>
-							<Backpack slots={wind.slots} items={wind.items} />
+						<ItemMenu key={`wind-backpack-${index}`} maxHeight={wind.maxHeight}>
+							<Backpack slots={wind.slots} items={wind.items} uuid={wind.uuid} />
 						</ItemMenu>
 					)
 				}

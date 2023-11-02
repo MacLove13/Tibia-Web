@@ -21,14 +21,8 @@ export class NetworkSystem {
     private entityToModification = new Array< { ID; Type; Data; }>();
     enemiesList = [];
     targetID = null;
-    private notifications = [
-        {
-            Title: 'Tibia on Rails',
-            Content: 'Bem vindo a Alpha v0.1'
-        }
-    ];
 
-    connect(auth: string) {
+    connect(auth: string, setIsInitializedAll) {
         const url = 'http://192.168.0.22:2137'
 
         if (!url) {
@@ -37,19 +31,13 @@ export class NetworkSystem {
             this.socket = io.connect(url);
         }
 
+        setIsInitializedAll(true);
+
         this.socket.emit("onPlayerConnect", {
             Auth: auth
         });
 
         this.Setup();
-    }
-
-    ClearNotifications() {
-        this.notifications = [];
-    }
-
-    GetNotifications() {
-        return this.notifications;
     }
 
     Process(world: World) {
@@ -143,10 +131,6 @@ export class NetworkSystem {
 
         this.socket.on("ApplyExperience", (data: { ID; Exp: number }) => {
             this.entityToModification.push({ ID: data.ID, Type: ModType.Exp, Data: data });
-        });
-
-        this.socket.on("SendNotification", (data: { ID; Message: string }) => {
-            this.entityToModification.push({ ID: data.ID, Type: ModType.SendNotification, Data: data });
         });
 
         this.socket.on("BattleMenu", (data: { ID; Data; }) => {
@@ -282,10 +266,6 @@ export class NetworkSystem {
                     this.enemiesList = this.entityToModification[i].Data.battleList;
                     this.targetID = this.entityToModification[i].Data.TargetID;
                 }
-
-                if (this.entityToModification[i].Type === ModType.SendNotification) {
-                    this.notifications.push(this.entityToModification[i].Data.Message);
-                }
             }
         }
     }
@@ -297,4 +277,4 @@ export class NetworkSystem {
     }
 }
 
-const enum ModType { Move, Teleport, Message, Hit, Exp, Heal, BattleMenu, Death, SendNotification };
+const enum ModType { Move, Teleport, Message, Hit, Exp, Heal, BattleMenu, Death };

@@ -1,10 +1,9 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import Game, { EventType } from 'bundles/GameJS/store/GameInit';
+import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
 import EmptySword from '../Images/item/empty_sword.gif';
 
 const Weapon = () => {
-	var gameInstance = new Game();
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'ITEM',
     // canDrop: (item) => item.type === 'Weapon',

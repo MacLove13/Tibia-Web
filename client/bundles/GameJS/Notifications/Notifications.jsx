@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Notification.scss';
 
-import Game, { EventType } from 'bundles/GameJS/store/GameInit';
+import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
 import GameNotification from './GameNotification';
 
 const Notifications = ({ }) => {
@@ -9,8 +9,33 @@ const Notifications = ({ }) => {
 	const notificationsToRemove = React.useRef([]);
 	const notificationIdRef = React.useRef(0);
   const highestZIndexRef = React.useRef(50000);
-	const gameInstance = new Game();
-	
+	const socket = GameInstance.init.networkSystem.GetSocket();
+
+	useEffect(() => {
+		socket.on("character:showNotification", (data) => {
+		  notificationIdRef.current++;
+		  highestZIndexRef.current++;
+
+		  console.log(data);
+
+		  const newNotification = {
+		    Id: notificationIdRef.current,
+		    Title: data.Title,
+		    Content: data.Content,
+		    zIndex: highestZIndexRef.current
+		  }
+
+		  setNotifications(prevNotifications => {
+		    // Remove notifications that are in the notificationsToRemove ref
+		    const updatedPrevNotifications = prevNotifications.filter(notification => 
+		      !notificationsToRemove.current.includes(notification.Id)
+		    );
+		    // Add the new notification to the array of previous notifications
+		    return [...updatedPrevNotifications, newNotification];
+		  });
+		});
+	}, []);
+
 
   const handleNotificationClick = (nId) => {
     let updatedNotifications = notifications.map(notification => {
@@ -31,32 +56,6 @@ const Notifications = ({ }) => {
 	const removeNotification = (nId) => {
 		if (!notificationsToRemove.current.includes(nId)) notificationsToRemove.current.push(nId);
 	};
-
-	const GetNotifications = () => {
-	    let newNotifications = gameInstance.init.networkSystem.GetNotifications().map((notification) => {
-
-	    	notificationIdRef.current++;
-	      highestZIndexRef.current++;
-
-		    return {
-		      ...notification,
-		      Id: notificationIdRef.current,
-		      zIndex: highestZIndexRef.current,
-		    };
-			});
-
-		  setNotifications(prevNotifications => {
-		    const updatedPrevNotifications = prevNotifications.filter(notification => !notificationsToRemove.current.includes(notification.Id));
-		    return [...updatedPrevNotifications, ...newNotifications];
-		  });
-
-	    gameInstance.init.networkSystem.ClearNotifications();
-	}
-
-	useEffect(() => {
-		const intervalId = setInterval(GetNotifications, 1000);
-    	return () => clearInterval(intervalId);
-	}, []);
 
 	return (
 		<>

@@ -4,18 +4,16 @@ import './Battle.scss';
 import MenuIcon from './Images/icon.svg';
 import Enemy from './Enemy';
 
-import Game, { EventType } from '../../../../../store/GameInit';
+import GameInstance, { EventType } from '../../../../../store/GameInit';
 
 const Battle = ({ }) => {
 	const [enemies, setEnemies] = useState([]);
 	const [targetID, setTargetID] = useState(null);
 
-	var gameInstance = new Game();
-
 	useEffect(() => {
 		setInterval(() => {
-			setEnemies(gameInstance.init.networkSystem.enemiesList);
-			setTargetID(gameInstance.init.networkSystem.targetID);
+			setEnemies(GameInstance.init.networkSystem.enemiesList);
+			setTargetID(GameInstance.init.networkSystem.targetID);
 		}, 200);
 	}, [])
 

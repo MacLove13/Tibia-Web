@@ -17,13 +17,15 @@ const EmptySlot = ({ }) => {
 	)
 };
 
-const Backpack = ({ slots, items }) => {
+const Backpack = ({ slots, items, uuid }) => {
 	const itemsCount = items.length;
 	const emptySlotsCount = slots - itemsCount;
 
 	const emptySlotsComponents = [...Array(emptySlotsCount)].map((_, index) => (
 	  <EmptySlot key={`empty-slot-${index}`} />
 	));
+
+	console.log(items)
 
 	return (
 		<>
@@ -32,7 +34,7 @@ const Backpack = ({ slots, items }) => {
 				<span>Backpack</span>
 			</div>
 			<div className="menu-body slot-list">
-				{ itemsCount > 0 && items.map((item) => <Item key={`item-${item.item.uuid}`} item={item} /> )}
+				{ itemsCount > 0 && items.map((item) => <Item key={`item-${item.item.uuid}`} backpack_uuid={uuid} item={item} /> )}
 				{emptySlotsComponents}
 			</div>
 		</>

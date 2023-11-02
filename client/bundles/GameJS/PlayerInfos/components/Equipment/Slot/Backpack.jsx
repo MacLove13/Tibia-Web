@@ -1,11 +1,10 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import Game, { EventType } from 'bundles/GameJS/store/GameInit';
+import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
 import BackpackImg from 'bundles/Images/Backpacks/Default.gif';
 import ContextMenuItem from 'bundles/GameJS/PlayerInfos/components/ItemMenu/ContextMenuItem';
 
 const Backpack = () => {
-	var gameInstance = new Game();
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'ITEM',
     // canDrop: (item) => item.type === 'Weapon',
@@ -33,7 +32,7 @@ const Backpack = () => {
   }
 
   const useItem = () => {
-    gameInstance.init.networkSystem.EmitServer("character:openMainBag");
+    GameInstance.init.networkSystem.EmitServer("character:openMainBag");
   };
 
   const showContextMenu = (event) => {

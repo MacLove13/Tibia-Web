@@ -25,7 +25,7 @@ class ItemTemplatesController < ApplicationController
 
     respond_to do |format|
       if @item_template.save
-        format.html { redirect_to item_url(@item_template), notice: "Item was successfully created." }
+        format.html { redirect_to item_template_url(@item_template), notice: "Item was successfully created." }
         format.json { render :show, status: :created, location: @item_template }
       else
         format.html { render :new, status: :unprocessable_entity }

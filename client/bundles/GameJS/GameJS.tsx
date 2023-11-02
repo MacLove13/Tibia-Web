@@ -5,14 +5,13 @@ import './GameJS.scss';
 
 import PlayerInfos from './PlayerInfos/container/PlayerInfos';
 import Notifications from './Notifications/Notifications';
-import Game from './store/GameInit';
+import GameInstance from './store/GameInit';
 
 const GameJS = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isInitializedAll, setIsInitializedAll] = useState(false);
   const [inputText, setInputText] = useState("");
   var timerCanvas = null;
-  var gameInstance = new Game();
 
   const canvasRef = useRef(null);
 
@@ -31,12 +30,12 @@ const GameJS = (props) => {
   };
 
   useEffect(() => {
-    gameInstance.Start(props.auth);
+    GameInstance.Start(props.auth, setIsInitializedAll);
     setIsInitialized(true);
 
-    setTimeout(() => {
-      setIsInitializedAll(true);
-    }, 3000);
+    // setTimeout(() => {
+    //   setIsInitializedAll(true);
+    // }, 3000);
 
     window.addEventListener('contextmenu', disableRightClick);
     window.addEventListener('keydown', disableDefaultArrows);
@@ -59,7 +58,7 @@ const GameJS = (props) => {
 
       { isInitializedAll && <PlayerInfos /> }
       <div className="notifications-content">
-        <Notifications />
+        { isInitializedAll && <Notifications /> }
       </div>
     </DndProvider>
   );

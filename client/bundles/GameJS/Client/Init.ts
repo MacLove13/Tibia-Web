@@ -33,7 +33,7 @@ export class Init {
     this.networkSystem = new NetworkSystem();
   }
 
-  Process(auth: string) {
+  Process(auth: string, setIsInitializedAll) {
     var renderingSystem: RenderingSystem;
     var cameraSystem = new CameraSystem();
     
@@ -54,7 +54,7 @@ export class Init {
         this.gameObj.AddComponent(new PositionComponent(0, 0));
         this.gameObj.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
         this.world.Add(this.gameObj);
-        this.networkSystem.connect(auth);
+        this.networkSystem.connect(auth, setIsInitializedAll);
         requestAnimationFrame(Loop);
       });
 

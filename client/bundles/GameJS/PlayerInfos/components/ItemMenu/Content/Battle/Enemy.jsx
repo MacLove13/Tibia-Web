@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './Battle.scss';
 
-import Game, { EventType } from '../../../../../store/GameInit';
+import GameInstance, { EventType } from '../../../../../store/GameInit';
 
 import MonsterRat from './Images/monster/rat.gif';
 
 const Enemy = ({ enemy, isTarget }) => {
-	var gameInstance = new Game();
 	let health = (enemy.hp * 100 / enemy.max_hp);
 
 	if (enemy.hp <= 0)
 		return null;
 
 	const onClickAttack = () => {
-		gameInstance.PublishEvent(EventType.PlayerTarget, { ID: enemy.id, IsTargeting: !isTarget });
+		GameInstance.PublishEvent(EventType.PlayerTarget, { ID: enemy.id, IsTargeting: !isTarget });
 	};
 
 	return (

@@ -4,11 +4,12 @@ import RightMenu from 'bundles/GameJS/RightMenu/RightMenu';
 import RightMenuItem from 'bundles/GameJS/RightMenu/RightMenuItem';
 
 
-const FoodMenu = ({ useItem }) => {
+const FoodMenu = ({ useItem, item_uuid }) => {
 
 	return (
 		<>
 			<RightMenuItem name="Use" action={useItem} />
+			<RightMenuItem name={item_uuid} />
 			<RightMenuItem name="Look" />
 		</>
 	)
@@ -33,7 +34,7 @@ const BackpackMenu = ({ useItem }) => {
 	)
 }
 
-const ContextMenuItem = ({ id, type, useItem }) => {
+const ContextMenuItem = ({ id, type, useItem, item_uuid }) => {
 
 	const closeMenu = () => {
 		const menu = document.getElementById(id);
@@ -51,7 +52,7 @@ const ContextMenuItem = ({ id, type, useItem }) => {
 
 	return (
 		<RightMenu id={id}>
-			{ type == 'Food' || type == 0 && <FoodMenu useItem={useItem} /> }
+			{ type == 'Food' || type == 0 && <FoodMenu useItem={useItem} item_uuid={item_uuid} /> }
 			{ type == 'Sword' && <WeaponMenu useItem={useItem} /> }
 			{ type == 'Backpack' && <BackpackMenu useItem={useItem} /> }
 		</RightMenu>

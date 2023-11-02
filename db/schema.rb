@@ -42,6 +42,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_01_164833) do
   end
 
   create_table "backpack_items", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.bigint "backpack_id", null: false
     t.bigint "item_template_id", null: false
     t.integer "quantity", default: 0, null: false
