@@ -56,7 +56,7 @@ function TilesEditor({ canvasRef, subscription }) {
     const tileX = Math.floor(x / TILE_SIZE) + left;
     const tileY = Math.floor(y / TILE_SIZE) + top;
 
-    console.log(tileX, tileY)
+    // console.log(tileX, tileY)
 
     if (!enabledTileEditorRef.current) return;
 
