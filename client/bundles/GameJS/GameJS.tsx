@@ -5,6 +5,7 @@ import './GameJS.scss';
 
 import PlayerInfos from './PlayerInfos/container/PlayerInfos';
 import Notifications from './Notifications/Notifications';
+import TextNotification from './Notifications/TextNotification';
 import GameInstance from './store/GameInit';
 
 import GameCanvas from './GameCanvas/GameCanvas';
@@ -35,10 +36,9 @@ const GameJS = (props) => {
   };
 
   function handleResize() {
-    console.log("allSystemsInitialized.current: " + allSystemsInitialized.current)
     if (allSystemsInitialized.current) {
-      console.log('resize screen')
       GameInstance.init.renderSystem.RisizedWindow();
+      GameInstance.init.renderSystemLayer1.RisizedWindow();
     }
 
     setWindowSize({
@@ -48,7 +48,6 @@ const GameJS = (props) => {
   }
 
   useEffect(() => {
-    console.log("isInitializedAll: " + isInitializedAll)
     allSystemsInitialized.current = isInitializedAll;
     handleResize();
   }, [isInitializedAll])
@@ -87,6 +86,8 @@ const GameJS = (props) => {
       <div className="notifications-content">
         { isInitializedAll && <Notifications /> }
       </div>
+
+      { isInitializedAll && <TextNotification /> }
     </DndProvider>
   );
 };

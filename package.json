@@ -10,7 +10,7 @@
     "@rails/actioncable": "^7.1.1",
     "@types/babel__core": "7",
     "@types/webpack": "5",
-    "SpriteGL": "https://github.com/krtr/SpriteGL",
+    "SpriteGL": "file:/home/mac/projects/SpriteGL",
     "babel-loader": "8",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",

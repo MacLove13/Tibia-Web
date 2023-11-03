@@ -9,6 +9,7 @@ export class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
     private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
+    private canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
     private chatMsgs = new Array<string>();
     private mouseClicks = new Array<Vector2D>();
     RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input ;
@@ -92,9 +93,6 @@ export class InputSystem implements ISystem {
     }
 
     private CheckClick(gameObj: GameObj, world: World) {
-
-
-
         if ((gameObj.ComponentSygnature & Componenets.Camera) !== Componenets.Camera) return;
         var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
         for (var i = 0; i < this.mouseClicks.length; i++) {
@@ -103,7 +101,22 @@ export class InputSystem implements ISystem {
                 y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
             };
 
-            console.log('X: ' + cameraposcomp.TilePosition.x + " Y: " + cameraposcomp.TilePosition.y)
+            const TILE_SIZE = 32;
+
+            const x = this.mouseClicks[i].x;
+            const y = this.mouseClicks[i].y;
+            const tileSize = 2 * TILE_SIZE;
+            const removeDivisorX = (this.canvas.width % TILE_SIZE);
+            const removeDivisorY = (this.canvas.height % TILE_SIZE);
+            
+            const left = cameraposcomp.TilePosition.x - Math.round((this.canvas.width - removeDivisorX) / tileSize);
+            const top = cameraposcomp.TilePosition.y - Math.round((this.canvas.height - removeDivisorY) / tileSize);
+
+            const tileX = Math.floor(x / TILE_SIZE) + left;
+            const tileY = Math.floor(y / TILE_SIZE) + top;
+
+            // console.log('X: ' + cameraposcomp.TilePosition.x + " Y: " + cameraposcomp.TilePosition.y)
+            // console.log('X: ' + tileX)
 
             for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
                 if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
@@ -192,20 +205,41 @@ export class InputSystem implements ISystem {
             });
         }
 
+        const CreateCanvasClickLayer1 = () => {
+            if (this.canvas1 == undefined) return;
+            this.canvas1.addEventListener("click", (e) => {
+                var x;
+                var y;
+                if (e.pageX || e.pageY) {
+                    x = e.pageX;
+                    y = e.pageY;
+                }
+                else {
+                    x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                    y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+                }
+                x -= this.canvas1.offsetLeft;
+                y -= this.canvas1.offsetTop;
+
+                this.mouseClicks.push({ x: x, y: y });
+
+            });
+        }
+
         if (this.canvas == undefined) {
             var gameCanvasInterval = setInterval(() => {
                 this.canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
+                this.canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
 
                 if (this.canvas != undefined) {
                     clearInterval(gameCanvasInterval);
                     CreateCanvasClick();
+                    CreateCanvasClickLayer1();
                 }
             }, 1000)
 
             return;
         }
-
-        
     }
 
 }

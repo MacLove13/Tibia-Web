@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_01_164833) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_03_184752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -126,6 +126,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_01_164833) do
     t.string "tileType"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "safeZone"
+    t.integer "owner"
+    t.integer "layer", default: 0
   end
 
   add_foreign_key "backpack_items", "backpacks"

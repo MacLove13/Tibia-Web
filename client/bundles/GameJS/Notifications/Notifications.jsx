@@ -16,8 +16,6 @@ const Notifications = ({ }) => {
 		  notificationIdRef.current++;
 		  highestZIndexRef.current++;
 
-		  console.log(data);
-
 		  const newNotification = {
 		    Id: notificationIdRef.current,
 		    Title: data.Title,

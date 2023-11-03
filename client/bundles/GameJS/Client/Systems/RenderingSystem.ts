@@ -18,15 +18,21 @@ export class RenderingSystem implements ISystem {
     private resized = false;
     private canvas: HTMLCanvasElement;
     private sprites;
+    private layer: number;
+    private renderPlayer: boolean;
 
     private map = {
         tiles: [],
     };
 
-    constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
+    constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement, layer = 0) {
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
         this.canvas = canvas;
         this.sprites = textureAtlas;
+        this.layer = layer;
+        this.renderPlayer = this.layer == 0 ? true : false;
+
+        this.renderer.ChangeBGColor({ r: 0, g: 0, b: 0, a: 0.0 });
     }
 
     ReGenerate() {
@@ -39,38 +45,40 @@ export class RenderingSystem implements ISystem {
             if ((gameObjList[i].ComponentSygnature & Componenets.Position) !== Componenets.Position) continue;
             var positionComponent = <PositionComponent> gameObjList[i].ComponentList[Componenets.Position];
 
-            var spriteComponent = <SpriteComponent> gameObjList[i].ComponentList[Componenets.Sprite];
-            if (spriteComponent) {
-                var pos = {
-                    x: positionComponent.PixelPosition.x + spriteComponent.SpriteOnTilePos.x,
-                    y: positionComponent.PixelPosition.y + spriteComponent.SpriteOnTilePos.y
-                }
-                this.DrawSprite(spriteComponent.RenderingSprite, pos.x, pos.y);
+            if (this.renderPlayer) {
+                var spriteComponent = <SpriteComponent> gameObjList[i].ComponentList[Componenets.Sprite];
+                if (spriteComponent) {
+                    var pos = {
+                        x: positionComponent.PixelPosition.x + spriteComponent.SpriteOnTilePos.x,
+                        y: positionComponent.PixelPosition.y + spriteComponent.SpriteOnTilePos.y
+                    }
+                    this.DrawSprite(spriteComponent.RenderingSprite, pos.x, pos.y);
 
-                var chMsg = <CharacterMessageComponent>gameObjList[i].ComponentList[Componenets.CharacterMessage];
-                if (chMsg) {
+                    var chMsg = <CharacterMessageComponent>gameObjList[i].ComponentList[Componenets.CharacterMessage];
+                    if (chMsg) {
 
-                    if (!chMsg.TextObj || chMsg.TextObj.str !== chMsg.Str) {
-                        this.renderer.DisposeTxt(chMsg.TextObj);
-                        chMsg.TextObj = this.renderer.PrepareTxt(chMsg.Str, "Yellow", 14, true);
+                        if (!chMsg.TextObj || chMsg.TextObj.str !== chMsg.Str) {
+                            this.renderer.DisposeTxt(chMsg.TextObj);
+                            chMsg.TextObj = this.renderer.PrepareTxt(chMsg.Str, "Yellow", 14, true);
 
+                        }
+
+                        this.renderer.DrawTxt(chMsg.TextObj, (pos.x - chMsg.TextObj.Size.Width / 2) + 10, pos.y - 23);
                     }
 
-                    this.renderer.DrawTxt(chMsg.TextObj, (pos.x - chMsg.TextObj.Size.Width / 2) + 10, pos.y - 23);
-                }
+                    var healthComponent = <HealthComponent>gameObjList[i].ComponentList[Componenets.Health];
+                    if (healthComponent) {
+                        this.renderer.SetHight(0.001);
+                        this.DrawHealthBar(healthComponent.HP / healthComponent.MaxHP, pos.x, pos.y - 6);
+                        this.renderer.SetHight(0.0);
 
-                var healthComponent = <HealthComponent>gameObjList[i].ComponentList[Componenets.Health];
-                if (healthComponent) {
-                    this.renderer.SetHight(0.001);
-                    this.DrawHealthBar(healthComponent.HP / healthComponent.MaxHP, pos.x, pos.y - 6);
-                    this.renderer.SetHight(0.0);
-
-                    if (healthComponent.IsTargeted) {
-                        this.DrawSprite(99, positionComponent.PixelPosition.x, positionComponent.PixelPosition.y);
+                        if (healthComponent.IsTargeted) {
+                            this.DrawSprite(99, positionComponent.PixelPosition.x, positionComponent.PixelPosition.y);
+                        }
                     }
-                }
 
-                continue;
+                    continue;
+                }
             }
 
             var mapComponent = gameObjList[i].ComponentList[Componenets.RenderMap];
@@ -143,24 +151,49 @@ export class RenderingSystem implements ISystem {
         this.renderer.DrawSpr(161, 401, 26, 4, posx, posy, 26, 4);
     }
 
-    private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: number[]) {
+    private DrawMap(cameraPos, mapPos: Vector2D, tileMap: number[]) {
         
         this.renderer.SetHight(-0.0001);
 
-        this.map.tiles.map((tile) => {
+        let tilesToRender = [];
+        
+        const halfXSize = 30; // Since 20x20 is the total size, half is 10 to get the radius
+        const halfYSize = 15;
+
+        // Calculate the bounds of the square
+        const leftBound = cameraPos.xx - halfXSize;
+        const rightBound = cameraPos.xx + halfXSize;
+        const topBound = cameraPos.yy - halfYSize;
+        const bottomBound = cameraPos.yy + halfYSize;
+
+        // Now filter the tiles to get only those within the square
+        tilesToRender = this.map.tiles.filter((tile) => {
+          return (
+            tile.x >= leftBound &&
+            tile.x <= rightBound &&
+            tile.y >= topBound &&
+            tile.y <= bottomBound
+          );
+        });
+
+        tilesToRender.map((tile) => {
             this.renderer.DrawSpr((tile.tileType % 32) * 32, ((tile.tileType / 32) | 0) * 32, 32, 32, tile.x * config.TileSize, tile.y * config.TileSize, config.TileSize, config.TileSize);
         });
 
         this.renderer.SetHight(0.0);
+        this.renderer.ChangeBGColor({ r: 0, g: 0, b: 0, a: 0.0 });
     }
 
     UpdateMapTiles(map) {
         this.map = map;
+        this.renderer.ChangeBGColor({ r: 0, g: 0, b: 0, a: 0.0 });
+    }
+
+    EnablePlayerHover(toggle) {
+        this.renderPlayer = toggle;
     }
 
     RisizedWindow() {
-        // this.resized = true;
-        // console.log('Resized Window')
         this.ReGenerate();
     }
 }

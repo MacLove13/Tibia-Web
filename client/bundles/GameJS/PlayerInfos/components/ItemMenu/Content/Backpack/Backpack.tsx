@@ -25,8 +25,6 @@ const Backpack = ({ slots, items, uuid }) => {
 	  <EmptySlot key={`empty-slot-${index}`} />
 	));
 
-	console.log(items)
-
 	return (
 		<>
 			<div className="menu-title">

@@ -28,7 +28,7 @@ const PlayerInfos = ({ Init }) => {
 
   useEffect(() => {
 	  socket.on("character:showBag", (data) => {
-		  console.log(data);
+		  // console.log(data);
 
 		  setOpenedWindows(prevWinds => {
 			  const existingWindowIndex = prevWinds.findIndex(wind => wind.uuid === data.uuid);
@@ -83,9 +83,6 @@ const PlayerInfos = ({ Init }) => {
 				}
 
 				else if (wind.type == 'Backpack') {
-
-					console.log('Open backpack')
-
 					return (
 						<ItemMenu key={`wind-backpack-${index}`} maxHeight={wind.maxHeight}>
 							<Backpack slots={wind.slots} items={wind.items} uuid={wind.uuid} />

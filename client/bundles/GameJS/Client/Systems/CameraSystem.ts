@@ -4,7 +4,7 @@ import {World} from "../World";
 import {Vector2D} from "../Interchange/DataStructures";
 
 export class CameraSystem implements ISystem {
-    private cameraPosList = new Array<Vector2D>();
+    private cameraPosList = [];
     RequiredSygnature = Componenets.Camera + Componenets.Position;
 
 
@@ -14,7 +14,12 @@ export class CameraSystem implements ISystem {
             if ((objList[i].ComponentSygnature & this.RequiredSygnature) !== this.RequiredSygnature) continue;
 
             var positionComponent = <PositionComponent> objList[i].ComponentList[Componenets.Position];
-            this.cameraPosList.push({ x: positionComponent.PixelPosition.x, y: positionComponent.PixelPosition.y });
+            this.cameraPosList.push({
+                x: positionComponent.PixelPosition.x,
+                y: positionComponent.PixelPosition.y,
+                xx: positionComponent.TilePosition.x,
+                yy: positionComponent.TilePosition.y,
+            });
         }
 
     }

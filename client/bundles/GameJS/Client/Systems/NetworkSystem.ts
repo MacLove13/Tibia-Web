@@ -22,6 +22,7 @@ export class NetworkSystem {
     enemiesList = [];
     targetID = null;
     private renderingSystem;
+    private renderingSystemLayer1;
     private setIsInitializedAll;
     private Initialized = false;
 
@@ -43,8 +44,9 @@ export class NetworkSystem {
         this.Setup();
     }
 
-    SetRenderingSystem(renderingSystem) {
+    SetRenderingSystem(renderingSystem, renderingSystemLayer1) {
         this.renderingSystem = renderingSystem;
+        this.renderingSystemLayer1 = renderingSystemLayer1;
     }
 
     Process(world: World) {
@@ -118,12 +120,20 @@ export class NetworkSystem {
 
         this.socket.on("Game:UpdateMap", (data: any) => {
 
-            this.renderingSystem.UpdateMapTiles(data.Map);
+            if (data.Layer == 0)
+                this.renderingSystem.UpdateMapTiles(data.Map);
+            else if (data.Layer == 1) {
+                this.renderingSystemLayer1.UpdateMapTiles(data.Map);
+            }
 
             if (!this.Initialized) {
                 this.setIsInitializedAll(true);
                 this.Initialized = true;
             }
+        })
+
+        this.socket.on("map:HoverYTile", (data: any) => {
+            this.renderingSystemLayer1.EnablePlayerHover(data.Toggle);
         })
 
         this.socket.on("CharacterMessage", (data: { Msg: string, ID }) => {
@@ -184,7 +194,7 @@ export class NetworkSystem {
         });
 
         this.socket.on("SetMainBackpack", (data: { image: string; slots: number; uuid: string; item_template: { Name: string; Attack: number; } }) => {
-            console.log(data);
+            // console.log(data);
         });
     }
 

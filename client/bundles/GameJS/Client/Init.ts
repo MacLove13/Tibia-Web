@@ -23,6 +23,7 @@ export class Init {
   enemies;
   networkSystem: NetworkSystem;
   renderSystem: RenderingSystem;
+  renderSystemLayer1: RenderingSystem;
 
   constructor() {
     this.world = new World();
@@ -36,6 +37,8 @@ export class Init {
 
   Process(auth: string, setIsInitializedAll) {
     var renderingSystem: RenderingSystem;
+    var renderingSystemLayer1: RenderingSystem;
+
     var cameraSystem = new CameraSystem();
     
     var movmentSystem = new MovementSystem();
@@ -52,13 +55,17 @@ export class Init {
         renderingSystem = new RenderingSystem(canvas, sprites);
         this.renderSystem = renderingSystem;
 
+        const canvasLayer1 = <HTMLCanvasElement>document.getElementById("GameCanvas-layer-1");
+        renderingSystemLayer1 = new RenderingSystem(canvasLayer1, sprites, 1);
+        this.renderSystemLayer1 = renderingSystemLayer1;
+
         this.gameObj.ID = 1541515125;
         this.gameObj.AddComponent(new PositionComponent(0, 0));
         this.gameObj.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
         this.world.Add(this.gameObj);
         this.networkSystem.connect(auth, setIsInitializedAll);
         requestAnimationFrame(Loop);
-        this.networkSystem.SetRenderingSystem(renderingSystem);
+        this.networkSystem.SetRenderingSystem(renderingSystem, renderingSystemLayer1);
       });
 
     const Loop = () => {
@@ -71,8 +78,16 @@ export class Init {
 
       this.networkSystem.Process(this.world);
       userInterfaceSystem.Process(this.world);
+
+      const camerasList = cameraSystem.GetCamerasList();
+      
+      // Layer 0
       renderingSystem.Process(this.world);
-      renderingSystem.RenderAll(cameraSystem.GetCamerasList());
+      renderingSystem.RenderAll(camerasList);
+
+      // Layer 1
+      renderingSystemLayer1.Process(this.world);
+      renderingSystemLayer1.RenderAll(camerasList);
 
       this.world.ClearEvents();
       requestAnimationFrame(Loop);
