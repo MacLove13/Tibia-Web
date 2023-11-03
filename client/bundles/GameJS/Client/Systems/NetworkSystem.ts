@@ -118,10 +118,7 @@ export class NetworkSystem {
 
         this.socket.on("Game:UpdateMap", (data: any) => {
 
-            console.log("Game:UpdateMap")
-            console.log(this.renderingSystem)
-
-            this.renderingSystem.UpdateMapTiles(data);
+            this.renderingSystem.UpdateMapTiles(data.Map);
 
             if (!this.Initialized) {
                 this.setIsInitializedAll(true);

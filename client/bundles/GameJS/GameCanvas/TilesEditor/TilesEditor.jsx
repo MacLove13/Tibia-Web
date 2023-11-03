@@ -13,6 +13,9 @@ function TilesEditor({ canvasRef, subscription }) {
   const [tileWalkable, setTileWalkable] = useState(true);
   const tileWalkableRef = useRef(tileWalkable);
 
+  const [editLayer, setEditLayer] = useState(0);
+  const editLayerRef = useRef(editLayer);
+
   const [enabledTileEditor, setEnabledTileEditor] = useState(false);
   const enabledTileEditorRef = useRef(enabledTileEditor);
 
@@ -21,10 +24,16 @@ function TilesEditor({ canvasRef, subscription }) {
     y: -55555555
   });
   const playerRef = useRef(playerPosition);
+  const isMouseDown = useRef(false);
+  const lastPosition = useRef({ x: -9999999999, y: -9999999999 });
 
   useEffect(() => {
     tileTypeRef.current = tileType;
   }, [tileType]);
+
+  useEffect(() => {
+    editLayerRef.current = editLayer;
+  }, [editLayer]);
 
   useEffect(() => {
     tileWalkableRef.current = tileWalkable;
@@ -39,7 +48,24 @@ function TilesEditor({ canvasRef, subscription }) {
     playerRef.current.y = playerPosition.y;
   }, [playerPosition]);
 
-  const handleCanvasClick = (event) => {
+  const changeTileType = (newType) => {
+    setTileType(newType);
+  }
+
+  const changeLayer = (newLayer) => {
+    setEditLayer(newLayer.target.value);
+  }
+
+  const changeWalkable = () => {
+    setTileWalkable(!tileWalkable)
+  }
+
+  const toggleTileEditor = () => {
+    setEnabledTileEditor(!enabledTileEditor);
+  }
+
+  function whileMouseDown(event) {
+    if (!enabledTileEditorRef.current) return;
     if (playerRef.current.x == -55555555) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
@@ -56,37 +82,46 @@ function TilesEditor({ canvasRef, subscription }) {
     const tileX = Math.floor(x / TILE_SIZE) + left;
     const tileY = Math.floor(y / TILE_SIZE) + top;
 
-    // console.log(tileX, tileY)
+    if (lastPosition.current.x == tileX && lastPosition.current.y == tileY) return;
 
-    if (!enabledTileEditorRef.current) return;
-
+    lastPosition.current = { x: tileX, y: tileY };
     GameInstance.init.networkSystem.EmitServer("tileEditor:updateTile", {
-        x: tileX,
-        y: tileY,
-        newType: tileTypeRef.current,
-        walkable: tileWalkableRef.current
+      layer: editLayerRef.current,
+      x: tileX,
+      y: tileY,
+      newType: tileTypeRef.current,
+      walkable: tileWalkableRef.current
     });
-  };
-
-  const changeTileType = (newType) => {
-    setTileType(newType);
   }
 
-  const changeWalkable = () => {
-    setTileWalkable(!tileWalkable)
+  function handleMouseDown(event) {
+    if (!enabledTileEditorRef.current) return;
+    isMouseDown.current = true;
   }
 
-  const toggleTileEditor = () => {
-    setEnabledTileEditor(!enabledTileEditor);
+  function handleMouseUp(event) {
+    if (!enabledTileEditorRef.current) return;
+    isMouseDown.current = false;
+  }
+
+  function handleMouseMove(event) {
+    if (!enabledTileEditorRef.current) return;
+    if (isMouseDown.current) {
+      whileMouseDown(event);
+    }
   }
 
   useEffect(() => {
 
     const canvas = canvasRef.current;
-    canvas.addEventListener('click', handleCanvasClick);
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      canvas.removeEventListener('click', handleCanvasClick);
+      canvas.removeEventListener('mousedown', handleMouseDown);
+      canvas.removeEventListener('mouseup', handleMouseUp);
+      canvas.removeEventListener('mousemove', handleMouseMove);
     };
   }, [canvasRef]);
 
@@ -114,6 +149,17 @@ function TilesEditor({ canvasRef, subscription }) {
             style={{ backgroundPosition: `-${(350 % 32) * 32}px -${((350 / 32) | 0) * 32}px` }}
           />
         </ul>
+
+        <hr />
+        <input
+          type="range"
+          min="-10"
+          max="10"
+          value={editLayerRef.current}
+          onChange={changeLayer}
+          className="slider"
+        />
+        <p>Layer: {editLayerRef.current}</p>
 
         <hr />
         walkable <br/>

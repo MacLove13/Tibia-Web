@@ -20,32 +20,7 @@ export class RenderingSystem implements ISystem {
     private sprites;
 
     private map = {
-        tiles: [
-          { x: 0, y: 0, walkable: true, tileType: 350 },
-          { x: 0, y: 1, walkable: true, tileType: 350 },
-          { x: 0, y: 2, walkable: true, tileType: 350 },
-          { x: 0, y: 3, walkable: true, tileType: 350 },
-          { x: 0, y: 4, walkable: true, tileType: 350 },
-          { x: 0, y: 5, walkable: true, tileType: 350 },
-          { x: 1, y: 0, walkable: true, tileType: 350 },
-          { x: 1, y: 1, walkable: true, tileType: 350 },
-          { x: 1, y: 2, walkable: true, tileType: 350 },
-          { x: 1, y: 3, walkable: true, tileType: 350 },
-          { x: 1, y: 4, walkable: true, tileType: 350 },
-          { x: 1, y: 5, walkable: true, tileType: 350 },
-          { x: 2, y: 2, walkable: true, tileType: 350 },
-          { x: 3, y: 3, walkable: true, tileType: 350 },
-          { x: 5, y: 2, walkable: false, tileType: 105 },
-
-
-          { x: 58, y: 52, walkable: false, tileType: 105 },
-          { x: 57, y: 52, walkable: false, tileType: 105 },
-          { x: 56, y: 52, walkable: false, tileType: 105 },
-          { x: 59, y: 52, walkable: false, tileType: 105 },
-
-          { x: 60, y: 50, walkable: false, tileType: 105 },
-          { x: 54, y: 49, walkable: false, tileType: 105 },
-        ],
+        tiles: [],
     };
 
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
@@ -179,8 +154,8 @@ export class RenderingSystem implements ISystem {
         this.renderer.SetHight(0.0);
     }
 
-    UpdateMapTiles(data) {
-        this.map = data.Map;
+    UpdateMapTiles(map) {
+        this.map = map;
     }
 
     RisizedWindow() {
