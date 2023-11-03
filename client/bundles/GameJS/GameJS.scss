@@ -15,14 +15,6 @@ body {
 		float: left;
 		width: 100vh;
 
-		.game-canvas {
-			display: block;
-			background-color: black;
-			position: absolute;
-			top: 0;
-			left: 30%;
-		}
-
 		.chat-input {
 			position: fixed;
 			bottom: 20px;

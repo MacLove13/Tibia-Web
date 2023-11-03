@@ -92,6 +92,9 @@ export class InputSystem implements ISystem {
     }
 
     private CheckClick(gameObj: GameObj, world: World) {
+
+
+
         if ((gameObj.ComponentSygnature & Componenets.Camera) !== Componenets.Camera) return;
         var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
         for (var i = 0; i < this.mouseClicks.length; i++) {
@@ -100,11 +103,14 @@ export class InputSystem implements ISystem {
                 y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
             };
 
+            console.log('X: ' + cameraposcomp.TilePosition.x + " Y: " + cameraposcomp.TilePosition.y)
+
             for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
                 if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
                     continue;
                 if (world.entityList[entityIndex].ID === gameObj.ID) continue;
                 var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
+                
                 if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
                     if (targetPosComp.PixelPosition.y - 10 + config.TileSize > pos.y && targetPosComp.PixelPosition.y - 10 < pos.y) {
                         var targeted = (<HealthComponent>world.entityList[entityIndex].ComponentList[Componenets.Health]).IsTargeted;
@@ -183,7 +189,6 @@ export class InputSystem implements ISystem {
 
                 this.mouseClicks.push({ x: x, y: y });
 
-                console.log('X: ' + x + " Y: " + y)
             });
         }
 

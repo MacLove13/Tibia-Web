@@ -7,13 +7,18 @@ import PlayerInfos from './PlayerInfos/container/PlayerInfos';
 import Notifications from './Notifications/Notifications';
 import GameInstance from './store/GameInit';
 
+import GameCanvas from './GameCanvas/GameCanvas';
+
 const GameJS = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isInitializedAll, setIsInitializedAll] = useState(false);
-  const [inputText, setInputText] = useState("");
-  var timerCanvas = null;
+  const allSystemsInitialized = useRef(isInitializedAll);
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
 
-  const canvasRef = useRef(null);
+  const [inputText, setInputText] = useState("");
 
   const changeInputText = (e) => {
     setInputText(e.value)
@@ -29,13 +34,28 @@ const GameJS = (props) => {
     }
   };
 
+  function handleResize() {
+    console.log("allSystemsInitialized.current: " + allSystemsInitialized.current)
+    if (allSystemsInitialized.current) {
+      console.log('resize screen')
+      GameInstance.init.renderSystem.RisizedWindow();
+    }
+
+    setWindowSize({
+      width: window.innerWidth - 200,
+      height: window.innerHeight - 200,
+    });
+  }
+
+  useEffect(() => {
+    console.log("isInitializedAll: " + isInitializedAll)
+    allSystemsInitialized.current = isInitializedAll;
+    handleResize();
+  }, [isInitializedAll])
+
   useEffect(() => {
     GameInstance.Start(props.auth, setIsInitializedAll);
     setIsInitialized(true);
-
-    // setTimeout(() => {
-    //   setIsInitializedAll(true);
-    // }, 3000);
 
     window.addEventListener('contextmenu', disableRightClick);
     window.addEventListener('keydown', disableDefaultArrows);
@@ -45,15 +65,22 @@ const GameJS = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   if (!isInitialized) {
     return null;
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div id="GameArea">
-        <canvas id="GameCanvas" className="game-canvas" width="800" height="600" ref={canvasRef} />
-        <input type="text" id="ChatInput" className="chat-input" onChange={changeInputText} value={inputText} />
+      <div id="GameArea" style={{ width: windowSize.width }}>
+        <GameCanvas isInitializedAll={isInitializedAll} setIsInitializedAll={setIsInitializedAll} gameSize={windowSize} />
+        { isInitializedAll && <input type="text" id="ChatInput" className="chat-input" onChange={changeInputText} value={inputText} /> }
       </div>
 
       { isInitializedAll && <PlayerInfos /> }

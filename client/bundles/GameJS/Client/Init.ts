@@ -22,6 +22,7 @@ export class Init {
   events;
   enemies;
   networkSystem: NetworkSystem;
+  renderSystem: RenderingSystem;
 
   constructor() {
     this.world = new World();
@@ -37,7 +38,7 @@ export class Init {
     var renderingSystem: RenderingSystem;
     var cameraSystem = new CameraSystem();
     
-    var movemnetSystem = new MovementSystem();
+    var movmentSystem = new MovementSystem();
     var userInterfaceSystem = new UserInterfaceSytem();
     var characterAnimationSystem = new AnimationSystem();
 
@@ -49,6 +50,7 @@ export class Init {
         config = configData.default as Config;
         const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
         renderingSystem = new RenderingSystem(canvas, sprites);
+        this.renderSystem = renderingSystem;
 
         this.gameObj.ID = 1541515125;
         this.gameObj.AddComponent(new PositionComponent(0, 0));
@@ -56,14 +58,14 @@ export class Init {
         this.world.Add(this.gameObj);
         this.networkSystem.connect(auth, setIsInitializedAll);
         requestAnimationFrame(Loop);
+        this.networkSystem.SetRenderingSystem(renderingSystem);
       });
 
     const Loop = () => {
       this.world.FPS = GetFPS();
-
-      //collisionSystem.Process(this.world);
+      
       characterAnimationSystem.Process(this.world);
-      movemnetSystem.Process(this.world);
+      movmentSystem.Process(this.world);
       cameraSystem.Process(this.world);
       this.inputSystem.Process(this.world);
 
@@ -72,7 +74,7 @@ export class Init {
       renderingSystem.Process(this.world);
       renderingSystem.RenderAll(cameraSystem.GetCamerasList());
 
-      this.world.ClearEvets();
+      this.world.ClearEvents();
       requestAnimationFrame(Loop);
     }
   }

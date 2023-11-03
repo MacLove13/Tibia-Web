@@ -37,7 +37,7 @@ export class World {
         return result;
     }
 
-    ClearEvets() {
+    ClearEvents() {
         this.eventList = [];
     }
 

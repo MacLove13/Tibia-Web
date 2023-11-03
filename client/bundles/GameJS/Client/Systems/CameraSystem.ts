@@ -16,6 +16,7 @@ export class CameraSystem implements ISystem {
             var positionComponent = <PositionComponent> objList[i].ComponentList[Componenets.Position];
             this.cameraPosList.push({ x: positionComponent.PixelPosition.x, y: positionComponent.PixelPosition.y });
         }
+
     }
 
     GetCamerasList(): Array<Vector2D> {

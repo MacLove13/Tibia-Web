@@ -9,7 +9,7 @@ import {
     PositionComponent, SimpleAnimationComponent,
     SpriteComponent
 } from "../BasicComponents";
-import {config} from "../Init";
+import {config, Init} from "../Init";
 import {GameObj} from "../GameObj";
 import {Events, World} from "../World";
 import {NewCharacterData, Rotation, MoveData} from "../Interchange/DataStructures";
@@ -21,6 +21,9 @@ export class NetworkSystem {
     private entityToModification = new Array< { ID; Type; Data; }>();
     enemiesList = [];
     targetID = null;
+    private renderingSystem;
+    private setIsInitializedAll;
+    private Initialized = false;
 
     connect(auth: string, setIsInitializedAll) {
         const url = 'http://192.168.0.22:2137'
@@ -31,13 +34,17 @@ export class NetworkSystem {
             this.socket = io.connect(url);
         }
 
-        setIsInitializedAll(true);
+        this.setIsInitializedAll = setIsInitializedAll;
 
         this.socket.emit("onPlayerConnect", {
             Auth: auth
         });
 
         this.Setup();
+    }
+
+    SetRenderingSystem(renderingSystem) {
+        this.renderingSystem = renderingSystem;
     }
 
     Process(world: World) {
@@ -108,6 +115,19 @@ export class NetworkSystem {
             this.newEntityList.push(gameObj);
             console.log("Vocé é um " + data.UClass);
         });
+
+        this.socket.on("Game:UpdateMap", (data: any) => {
+
+            console.log("Game:UpdateMap")
+            console.log(this.renderingSystem)
+
+            this.renderingSystem.UpdateMapTiles(data);
+
+            if (!this.Initialized) {
+                this.setIsInitializedAll(true);
+                this.Initialized = true;
+            }
+        })
 
         this.socket.on("CharacterMessage", (data: { Msg: string, ID }) => {
             this.entityToModification.push({ ID: data.ID, Type: ModType.Message, Data: data.Msg });

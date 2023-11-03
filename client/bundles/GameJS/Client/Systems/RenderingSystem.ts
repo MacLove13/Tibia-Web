@@ -15,12 +15,47 @@ export class RenderingSystem implements ISystem {
     private renderer: SpriteRenderer;
     private mapsToRender = new Array<{ position: PositionComponent; map: RenderMapComponent; }>();
     private dmgTxtList = new Array<{ txtObj; position: Vector2D, lifeTime: number }>();
+    private resized = false;
+    private canvas: HTMLCanvasElement;
+    private sprites;
 
-    private screenSizeX = 1024;
-    private screenSizeY = 768;
+    private map = {
+        tiles: [
+          { x: 0, y: 0, walkable: true, tileType: 350 },
+          { x: 0, y: 1, walkable: true, tileType: 350 },
+          { x: 0, y: 2, walkable: true, tileType: 350 },
+          { x: 0, y: 3, walkable: true, tileType: 350 },
+          { x: 0, y: 4, walkable: true, tileType: 350 },
+          { x: 0, y: 5, walkable: true, tileType: 350 },
+          { x: 1, y: 0, walkable: true, tileType: 350 },
+          { x: 1, y: 1, walkable: true, tileType: 350 },
+          { x: 1, y: 2, walkable: true, tileType: 350 },
+          { x: 1, y: 3, walkable: true, tileType: 350 },
+          { x: 1, y: 4, walkable: true, tileType: 350 },
+          { x: 1, y: 5, walkable: true, tileType: 350 },
+          { x: 2, y: 2, walkable: true, tileType: 350 },
+          { x: 3, y: 3, walkable: true, tileType: 350 },
+          { x: 5, y: 2, walkable: false, tileType: 105 },
+
+
+          { x: 58, y: 52, walkable: false, tileType: 105 },
+          { x: 57, y: 52, walkable: false, tileType: 105 },
+          { x: 56, y: 52, walkable: false, tileType: 105 },
+          { x: 59, y: 52, walkable: false, tileType: 105 },
+
+          { x: 60, y: 50, walkable: false, tileType: 105 },
+          { x: 54, y: 49, walkable: false, tileType: 105 },
+        ],
+    };
 
     constructor(canvas: HTMLCanvasElement, textureAtlas: HTMLImageElement) {
         this.renderer = SpriteGL.SpriteRenderer.fromCanvas(canvas, textureAtlas);
+        this.canvas = canvas;
+        this.sprites = textureAtlas;
+    }
+
+    ReGenerate() {
+        this.renderer = SpriteGL.SpriteRenderer.fromCanvas(this.canvas, this.sprites);
     }
 
     Process(world: World) {
@@ -99,6 +134,13 @@ export class RenderingSystem implements ISystem {
     }
 
     RenderAll(cameraList: Array<Vector2D>) {
+
+        if (this.resized) {
+            cameraList = [];
+            cameraList.push({ x: 55 * config.TileSize, y: 55 * config.TileSize });
+            this.resized = false;
+        }
+
         if (cameraList.length === 0) {
             cameraList.push({ x: 55 * config.TileSize, y: 55 * config.TileSize });
         }
@@ -127,28 +169,23 @@ export class RenderingSystem implements ISystem {
     }
 
     private DrawMap(cameraPos: Vector2D, mapPos: Vector2D, tileMap: number[]) {
+        
         this.renderer.SetHight(-0.0001);
-        for (var i = 0; i < this.mapsToRender.length; i++) {
-            var startX = ((cameraPos.x - (this.screenSizeX / 2)) / config.TileSize) | 0;
 
-            var endX = (startX + this.screenSizeX / config.TileSize) | 0;
-            endX += 1;
-            var startY = ((cameraPos.y - ( this.screenSizeY / 2 )) / config.TileSize) | 0;
+        this.map.tiles.map((tile) => {
+            this.renderer.DrawSpr((tile.tileType % 32) * 32, ((tile.tileType / 32) | 0) * 32, 32, 32, tile.x * config.TileSize, tile.y * config.TileSize, config.TileSize, config.TileSize);
+        });
 
-            var endY = (startY + this.screenSizeY / config.TileSize) | 0;
-            endY += 2;
-
-            if (startX < 0) startX = 0;
-            if (startY < 0) startY = 0;
-            if (endX > config.MapWidth - 1) endX = config.MapWidth - 1;
-            if (endY > config.MapHeight - 1) endY = config.MapHeight - 1;
-            for (var i = startY; i < endY; i++) {
-                for (var j = startX; j < endX; j++) {
-                    this.DrawSprite(config.Data[i * config.MapWidth + j] - 1, (j * config.TileSize), i * config.TileSize);
-                }
-            }
-        }
         this.renderer.SetHight(0.0);
     }
 
+    UpdateMapTiles(data) {
+        this.map = data.Map;
+    }
+
+    RisizedWindow() {
+        // this.resized = true;
+        // console.log('Resized Window')
+        this.ReGenerate();
+    }
 }

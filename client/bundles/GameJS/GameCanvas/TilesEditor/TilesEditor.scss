@@ -1,0 +1,29 @@
+.tiles-editor {
+	background-color: #EEE;
+	height: 300px;
+	width: 200px;
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	right: 0;
+	padding: 5px;
+
+	.title {
+		text-align: center;
+		padding: 3px;
+		border: 1px solid brown;
+	}
+
+	.tile-types {
+
+		ul {
+			list-style-type: none;
+
+			li {
+				width: 32px;
+				height: 32px;
+				background-image: url('bundles/GameJS/Client/resources/sprites.png');
+			}
+		}
+	}
+}
