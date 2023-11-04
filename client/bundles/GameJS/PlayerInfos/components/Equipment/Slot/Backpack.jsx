@@ -7,7 +7,7 @@ import ContextMenuItem from 'bundles/GameJS/PlayerInfos/components/ItemMenu/Cont
 const Backpack = () => {
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'ITEM',
-    // canDrop: (item) => item.type === 'Weapon',
+    canDrop: (item) => item.type === 'Backpack',
     drop: (item) => onEquip(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -26,7 +26,7 @@ const Backpack = () => {
   	console.log(item)
   }
 
-  let backgroundColor = 'white';
+  let backgroundColor = 'transparent';
   if (isOver) {
     backgroundColor = canDrop ? 'green' : 'red';
   }

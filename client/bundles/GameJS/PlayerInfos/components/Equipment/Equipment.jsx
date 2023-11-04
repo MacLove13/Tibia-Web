@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import GameInstance from 'bundles/GameJS/store/GameInit';
 import './Equipment.scss';
 
 import EmptyAmulet from './Images/item/empty_amulet.gif';
@@ -12,10 +12,21 @@ import EmptyBoots from './Images/item/empty_boots.gif';
 import EmptyShield from './Images/item/empty_shield.gif';
 import EmptyAmmo from './Images/item/empty_ammo.gif';
 
-import Weapon from './Slot/Weapon';
+import LeftHand from './Slot/LeftHand';
 import Backpack from './Slot/Backpack';
 
 const Equipment = () => {
+	const [equipment, setEquipment] = useState(null);
+	const socket = GameInstance.init.networkSystem.GetSocket();
+
+	useEffect(() => {
+		socket.on("Character:UpdateEquipments", (data) => {
+		  setEquipment(data.Data);
+
+		  console.log('UpdateEquipments')
+		  console.log(data.Data);
+		});
+	}, []);
 
 	return (
 		<div className="background equipment">
@@ -23,7 +34,7 @@ const Equipment = () => {
 				<div className="slot">
 					<img src={EmptyAmulet} alt="necklace" />
 				</div>
-				<Weapon />
+				<LeftHand equipped={equipment?.leftHand || null} />
 				<div className="slot">
 					<img src={EmptyRing} alt="ring" />
 				</div>

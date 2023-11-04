@@ -23,10 +23,9 @@ export class NetworkSystem {
     targetID = null;
     private renderingSystem;
     private renderingSystemLayer1;
-    private setIsInitializedAll;
     private Initialized = false;
 
-    connect(auth: string, setIsInitializedAll) {
+    connect(auth: string) {
         const url = 'http://192.168.0.22:2137'
 
         if (!url) {
@@ -34,8 +33,6 @@ export class NetworkSystem {
         } else {
             this.socket = io.connect(url);
         }
-
-        this.setIsInitializedAll = setIsInitializedAll;
 
         this.socket.emit("onPlayerConnect", {
             Auth: auth
@@ -124,11 +121,6 @@ export class NetworkSystem {
                 this.renderingSystem.UpdateMapTiles(data.Map);
             else if (data.Layer == 1) {
                 this.renderingSystemLayer1.UpdateMapTiles(data.Map);
-            }
-
-            if (!this.Initialized) {
-                this.setIsInitializedAll(true);
-                this.Initialized = true;
             }
         })
 

@@ -116,7 +116,7 @@ export class InputSystem implements ISystem {
             const tileY = Math.floor(y / TILE_SIZE) + top;
 
             // console.log('X: ' + cameraposcomp.TilePosition.x + " Y: " + cameraposcomp.TilePosition.y)
-            // console.log('X: ' + tileX)
+            console.log('X: ', tileX, ' | Y: ', tileY)
 
             for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
                 if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))

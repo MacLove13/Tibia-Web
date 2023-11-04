@@ -24,6 +24,7 @@ export class Init {
   networkSystem: NetworkSystem;
   renderSystem: RenderingSystem;
   renderSystemLayer1: RenderingSystem;
+  initialized: boolean;
 
   constructor() {
     this.world = new World();
@@ -31,6 +32,7 @@ export class Init {
     this.gameObj = new GameObj();
     this.events = Events;
     this.enemies = [];
+    this.initialized = false;
 
     this.networkSystem = new NetworkSystem();
   }
@@ -63,7 +65,7 @@ export class Init {
         this.gameObj.AddComponent(new PositionComponent(0, 0));
         this.gameObj.AddComponent(new RenderMapComponent(config.Data, config.MapWidth, config.MapHeight));
         this.world.Add(this.gameObj);
-        this.networkSystem.connect(auth, setIsInitializedAll);
+        this.networkSystem.connect(auth);
         requestAnimationFrame(Loop);
         this.networkSystem.SetRenderingSystem(renderingSystem, renderingSystemLayer1);
       });
@@ -91,6 +93,11 @@ export class Init {
 
       this.world.ClearEvents();
       requestAnimationFrame(Loop);
+
+      if (!this.initialized) {
+        this.initialized = true;
+        setIsInitializedAll(true);
+      }
     }
   }
 

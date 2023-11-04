@@ -14,6 +14,9 @@ function TilesEditor({ canvasRef, subscription }) {
   const [tileWalkable, setTileWalkable] = useState(true);
   const tileWalkableRef = useRef(tileWalkable);
 
+  const [tileSafe, setTileSafe] = useState(false);
+  const tileSafeRef = useRef(tileSafe);
+
   const [editLayer, setEditLayer] = useState(0);
   const editLayerRef = useRef(editLayer);
 
@@ -45,6 +48,10 @@ function TilesEditor({ canvasRef, subscription }) {
   useEffect(() => {
     tileWalkableRef.current = tileWalkable;
   }, [tileWalkable]);
+
+  useEffect(() => {
+    tileSafeRef.current = tileSafe;
+  }, [tileSafe]);
 
   useEffect(() => {
     enabledTileEditorRef.current = enabledTileEditor;
@@ -80,6 +87,10 @@ function TilesEditor({ canvasRef, subscription }) {
 
   const changeWalkable = () => {
     setTileWalkable(!tileWalkable)
+  }
+
+  const changeTileSafe = () => {
+    setTileSafe(!tileSafe)
   }
 
   const toggleLayer = () => {
@@ -122,7 +133,8 @@ function TilesEditor({ canvasRef, subscription }) {
         x: tileX - 1,
         y: tileY,
         newType: 7,
-        walkable: true
+        walkable: true,
+        safeZone: false,
       });
 
       GameInstance.init.networkSystem.EmitServer("tileEditor:updateTile", {
@@ -130,7 +142,8 @@ function TilesEditor({ canvasRef, subscription }) {
         x: tileX,
         y: tileY -1,
         newType: 6,
-        walkable: true
+        walkable: true,
+        safeZone: false,
       });
 
       GameInstance.init.networkSystem.EmitServer("tileEditor:updateTile", {
@@ -138,7 +151,8 @@ function TilesEditor({ canvasRef, subscription }) {
         x: tileX - 1,
         y: tileY - 1,
         newType: 5,
-        walkable: true
+        walkable: true,
+        safeZone: false,
       });
 
       GameInstance.init.networkSystem.EmitServer("tileEditor:updateTile", {
@@ -146,7 +160,8 @@ function TilesEditor({ canvasRef, subscription }) {
         x: tileX,
         y: tileY,
         newType: 8,
-        walkable: false
+        walkable: false,
+        safeZone: false,
       });
       return;
     }
@@ -156,7 +171,8 @@ function TilesEditor({ canvasRef, subscription }) {
       x: tileX,
       y: tileY,
       newType: tileTypeRef.current,
-      walkable: tileWalkableRef.current
+      walkable: tileWalkableRef.current,
+      safeZone: tileSafeRef.current,
     });
   }
 
@@ -413,6 +429,10 @@ function TilesEditor({ canvasRef, subscription }) {
         <hr />
         walkable <br/>
         <input type="checkbox" onChange={changeWalkable} checked={tileWalkable} />
+
+        <hr />
+        SafeZone <br/>
+        <input type="checkbox" onChange={changeTileSafe} checked={tileSafe} />
 
         <hr />
         Esconder Layer 1 <br/>
