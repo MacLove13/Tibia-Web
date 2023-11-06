@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import * as io from 'socket.io-client';
 import {
     CameraComponent,
     CharacterAnimationComponent, CharacterMessageComponent,
@@ -15,7 +15,7 @@ import {Events, World} from "../World";
 import {NewCharacterData, Rotation, MoveData} from "../Interchange/DataStructures";
 
 export class NetworkSystem {
-    private socket: SocketIOClient.Socket;
+    private socket: io.Socket;
     private newEntityList = [];
     private EntityToRemove = [];
     private entityToModification = new Array< { ID; Type; Data; }>();
@@ -26,13 +26,15 @@ export class NetworkSystem {
     private Initialized = false;
 
     connect(auth: string) {
-        const url = 'http://192.168.0.22:2137'
+        const url = 'http://127.0.0.1:2137';
 
-        if (!url) {
-            this.socket = io.connect();
-        } else {
-            this.socket = io.connect(url);
-        }
+        this.socket = io.io(url, {
+            withCredentials: true
+        });
+
+        this.socket.on('connect_error', (error) => {
+            console.error('Connection Error:', error);
+        });
 
         this.socket.emit("onPlayerConnect", {
             Auth: auth
