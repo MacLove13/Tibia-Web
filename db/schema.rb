@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_03_184752) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_06_152959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -41,31 +41,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_03_184752) do
     t.index ["uuid"], name: "index_accounts_on_uuid", unique: true
   end
 
-  create_table "backpack_items", force: :cascade do |t|
-    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
-    t.bigint "backpack_id", null: false
-    t.bigint "item_template_id", null: false
-    t.integer "quantity", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["backpack_id"], name: "index_backpack_items_on_backpack_id"
-    t.index ["item_template_id"], name: "index_backpack_items_on_item_template_id"
-  end
-
-  create_table "backpacks", force: :cascade do |t|
-    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
-    t.integer "slots", default: 1, null: false
-    t.boolean "dropped", default: false, null: false
-    t.json "position", default: {"x"=>0, "y"=>0}, null: false
-    t.string "image", default: "Backpacks/Default.gif", null: false
-    t.bigint "character_id", default: 0, null: false
-    t.bigint "item_template_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["character_id"], name: "index_backpacks_on_character_id"
-    t.index ["item_template_id"], name: "index_backpacks_on_item_template_id"
-  end
-
   create_table "character_authentications", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "character_id", null: false
@@ -92,9 +67,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_03_184752) do
     t.json "position", default: {"x"=>60, "y"=>50}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "backpacks_id"
     t.index ["account_id"], name: "index_characters_on_account_id"
-    t.index ["backpacks_id"], name: "index_characters_on_backpacks_id"
     t.index ["name"], name: "index_characters_on_name", unique: true
     t.index ["uuid"], name: "index_characters_on_uuid", unique: true
   end
@@ -113,28 +86,41 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_03_184752) do
     t.integer "heal_hp", default: 0, null: false
     t.string "image", default: "none.gif", null: false
     t.integer "defense", default: 0, null: false
+    t.integer "slots", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_item_templates_on_name", unique: true
     t.index ["uuid"], name: "index_item_templates_on_uuid", unique: true
   end
 
+  create_table "items", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
+    t.bigint "character_id"
+    t.bigint "item_template_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.json "position"
+    t.uuid "inside_item"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_id"], name: "index_items_on_character_id"
+    t.index ["item_template_id"], name: "index_items_on_item_template_id"
+  end
+
   create_table "map_tiles", force: :cascade do |t|
     t.integer "x"
     t.integer "y"
-    t.boolean "walkable"
-    t.string "tileType"
+    t.boolean "walkable", default: false, null: false
+    t.string "tile_type"
+    t.boolean "safe_zone", default: false, null: false
+    t.integer "owner", default: 0, null: false
+    t.integer "layer", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "safeZone"
-    t.integer "owner"
-    t.integer "layer", default: 0
   end
 
-  add_foreign_key "backpack_items", "backpacks"
-  add_foreign_key "backpack_items", "item_templates"
   add_foreign_key "character_authentications", "accounts"
   add_foreign_key "character_authentications", "characters"
   add_foreign_key "characters", "accounts"
-  add_foreign_key "characters", "backpacks", column: "backpacks_id"
+  add_foreign_key "items", "characters"
+  add_foreign_key "items", "item_templates"
 end

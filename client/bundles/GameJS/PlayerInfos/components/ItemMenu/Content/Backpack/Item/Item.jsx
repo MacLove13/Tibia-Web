@@ -34,11 +34,11 @@ const Item = ({ item, backpack_uuid }) => {
 		menu.style.top = `${event.pageY}px`;
 	};
 
-	const imageUrl = require(`bundles/Images/${uItem.image}`);
+	const imageUrl = require(`bundles/Images/${uItem.item_template.image}`);
 
 	return (
 		<div className="backpack">
-			<ContextMenuItem id={`item-menu-${uItem.uuid}`} type={uItem.type} useItem={useItem} item_uuid={uItem.uuid} />
+			<ContextMenuItem id={`item-menu-${uItem.uuid}`} type={uItem.item_template.type} useItem={useItem} item_uuid={uItem.uuid} />
 			<div
 				className="slot"
 				onClick={onClickItem}
@@ -46,7 +46,7 @@ const Item = ({ item, backpack_uuid }) => {
 				ref={drag}
 			>
 				<div className="item" style={{ backgroundImage: `url(${imageUrl})` }} />
-				<span>{uItem.quantity}</span>
+				{ uItem.quantity > 1 && <span>{uItem.quantity}</span> }
 			</div>
 		</div>
 	)

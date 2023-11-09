@@ -27,8 +27,8 @@ const PlayerInfos = ({ Init }) => {
   const socket = GameInstance.init.networkSystem.GetSocket();
 
   useEffect(() => {
-	  socket.on("character:showBag", (data) => {
-		  // console.log(data);
+	  socket.on("Character:ShowBag", (data) => {
+		  console.log(data);
 
 		  setOpenedWindows(prevWinds => {
 			  const existingWindowIndex = prevWinds.findIndex(wind => wind.uuid === data.uuid);

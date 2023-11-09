@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
-import BackpackImg from 'bundles/Images/Backpacks/Default.gif';
 import ContextMenuItem from 'bundles/GameJS/PlayerInfos/components/ItemMenu/ContextMenuItem';
 
-const Backpack = () => {
+import EmptyBag from '../Images/item/empty_bag.gif';
+
+const Backpack = ({ equipped }) => {
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'ITEM',
     canDrop: (item) => item.type === 'Backpack',
@@ -32,7 +33,7 @@ const Backpack = () => {
   }
 
   const useItem = () => {
-    GameInstance.init.networkSystem.EmitServer("character:openMainBag");
+    GameInstance.init.networkSystem.EmitServer("Character:OpenEquippedBag");
   };
 
   const showContextMenu = (event) => {
@@ -43,17 +44,29 @@ const Backpack = () => {
     menu.style.top = `${event.pageY}px`;
   };
 
-  // const imageUrl = require(`bundles/Images/${uItem.image}`);
+  let imageUrl = null;
+  if (equipped && equipped.image != null) {
+    imageUrl = require(`bundles/Images/${equipped.image}`);
+  }
 
 	return (
     <>
-      <ContextMenuItem id={`equipment-backpack`} type="Backpack" useItem={useItem} />
-  		<div
-        className="slot"
-        onContextMenu={showContextMenu}
-      >
-  			<img src={BackpackImg} ref={drop} style={{ backgroundColor }} alt="left-hand" />
-  		</div>
+      { equipped && <>
+          <ContextMenuItem id={`equipment-backpack`} type="Backpack" useItem={useItem} />
+      		<div
+            className="slot"
+            onContextMenu={showContextMenu}
+          >
+            { !imageUrl && <img src={EmptyBag} ref={drop} style={{ backgroundColor }} alt="bag" /> }
+            { imageUrl && <img src={imageUrl} ref={drop} style={{ backgroundColor }} alt="bag" /> }
+      		</div>
+        </>
+      }
+
+      { !imageUrl && <div className="slot">
+          <img src={EmptyBag} ref={drop} style={{ backgroundColor }} alt="bag" />
+        </div>
+      }
     </>
 	)
 };

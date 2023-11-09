@@ -26,7 +26,7 @@ export class NetworkSystem {
     private Initialized = false;
 
     connect(auth: string) {
-        const url = 'http://127.0.0.1:2137';
+        const url = 'http://192.168.0.22:2137';
 
         this.socket = io.io(url, {
             withCredentials: true
@@ -34,6 +34,14 @@ export class NetworkSystem {
 
         this.socket.on('connect_error', (error) => {
             console.error('Connection Error:', error);
+        });
+
+        this.socket.on('connect_timeout', (timeout) => {
+            console.error('Conexão expirou após', timeout);
+        });
+
+        this.socket.on('error', (error) => {
+            console.error('Erro no Socket.IO:', error);
         });
 
         this.socket.emit("onPlayerConnect", {

@@ -48,6 +48,9 @@ export class RenderingSystem implements ISystem {
             if (this.renderPlayer) {
                 var spriteComponent = <SpriteComponent> gameObjList[i].ComponentList[Componenets.Sprite];
                 if (spriteComponent) {
+
+                    console.log(spriteComponent);
+
                     var pos = {
                         x: positionComponent.PixelPosition.x + spriteComponent.SpriteOnTilePos.x,
                         y: positionComponent.PixelPosition.y + spriteComponent.SpriteOnTilePos.y
@@ -177,7 +180,7 @@ export class RenderingSystem implements ISystem {
         });
 
         tilesToRender.map((tile) => {
-            this.renderer.DrawSpr((tile.tileType % 32) * 32, ((tile.tileType / 32) | 0) * 32, 32, 32, tile.x * config.TileSize, tile.y * config.TileSize, config.TileSize, config.TileSize);
+            this.renderer.DrawSpr((tile.tile_type % 32) * 32, ((tile.tile_type / 32) | 0) * 32, 32, 32, tile.x * config.TileSize, tile.y * config.TileSize, config.TileSize, config.TileSize);
         });
 
         this.renderer.SetHight(0.0);

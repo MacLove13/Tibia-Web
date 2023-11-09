@@ -1,12 +1,13 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import GameInstance, { EventType } from 'bundles/GameJS/store/GameInit';
+import GameInstance from 'bundles/GameJS/store/GameInit';
 import EmptySword from '../Images/item/empty_sword.gif';
+import EquippedItem from '../EquippedItem';
 
 const LeftHand = ({ equipped }) => {
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'ITEM',
-    canDrop: (item) => item.item_template.Type === '4',
+    canDrop: (item) => item.item_template.type === '4',
     drop: (item) => onEquip(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -15,13 +16,13 @@ const LeftHand = ({ equipped }) => {
   }));
 
   const onEquip = (item) => {
-    console.log(item)
-  	if (item.item_template.Type != "Sword" && item.item_template.Type != "4") {
+  	if (item.item_template.type != "Sword" && item.item_template.type != "4") {
   		console.log('Este item não é uma arma.')
   		return;
   	}
 
     GameInstance.init.networkSystem.EmitServer("EquipItem", {
+      slot: 'leftHand',
       item_uuid: item.uuid
     });
   }
@@ -32,14 +33,14 @@ const LeftHand = ({ equipped }) => {
   }
 
   let imageUrl = null;
-  if (equipped) {
+  if (equipped && equipped.image != null) {
     imageUrl = require(`bundles/Images/${equipped.image}`);
   }
 
 	return (
-		<div className="slot">
-			{ !equipped && <img src={EmptySword} ref={drop} style={{ backgroundColor }} alt="left-hand" /> }
-      { equipped && <img src={imageUrl} ref={drop} style={{ backgroundColor }} alt="left-hand" /> }
+		<div className="slot" ref={drop}>
+			{ !imageUrl && <img src={EmptySword} style={{ backgroundColor }} alt="left-hand" /> }
+      { imageUrl && <EquippedItem imageUrl={imageUrl} slot="leftHand" item={equipped} /> }
 		</div>
 	)
 };

@@ -1,4 +1,4 @@
-class CreateItems < ActiveRecord::Migration[7.1]
+class CreateItemTemplates < ActiveRecord::Migration[7.1]
   def change
     create_enum :item_type, ["Common", "Backpack", "Food", "Potion", "Sword"]
     create_enum :item_vocation, ["Any", "Knight", "Paladin"]
@@ -17,6 +17,7 @@ class CreateItems < ActiveRecord::Migration[7.1]
       t.integer :heal_hp, null: false, default: 0
       t.string :image, null: false, default: 'none.gif'
       t.integer :defense, null: false, default: 0
+      t.integer :slots, null: false, default: 0
 
       t.timestamps
     end

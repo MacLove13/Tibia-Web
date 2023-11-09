@@ -71,7 +71,7 @@ class ItemTemplatesController < ApplicationController
         :vocation, :two_hands, :attack,
         :weight, :mergeable,
         :heal_hp, :image, :defense,
-        :vocation
+        :vocation, :slots
       )
     end
 

@@ -415,6 +415,74 @@ function TilesEditor({ canvasRef, subscription }) {
           <TileItem itemId={402} changeTileType={changeTileType} />
         </ul>
 
+        <ul>
+          <TileItem itemId={403} changeTileType={changeTileType} />
+          <TileItem itemId={404} changeTileType={changeTileType} />
+        </ul>
+
+        <ul>
+          <TileItem itemId={405} changeTileType={changeTileType} />
+          <TileItem itemId={406} changeTileType={changeTileType} />
+          <TileItem itemId={407} changeTileType={changeTileType} />
+          <TileItem itemId={408} changeTileType={changeTileType} />
+          <TileItem itemId={409} changeTileType={changeTileType} />
+          <TileItem itemId={410} changeTileType={changeTileType} />
+          <TileItem itemId={411} changeTileType={changeTileType} />
+          <TileItem itemId={412} changeTileType={changeTileType} />
+          <TileItem itemId={413} changeTileType={changeTileType} />
+          <TileItem itemId={414} changeTileType={changeTileType} />
+          <TileItem itemId={415} changeTileType={changeTileType} />
+          <TileItem itemId={416} changeTileType={changeTileType} />
+          <TileItem itemId={417} changeTileType={changeTileType} />
+          <TileItem itemId={418} changeTileType={changeTileType} />
+          <TileItem itemId={419} changeTileType={changeTileType} />
+          <TileItem itemId={420} changeTileType={changeTileType} />
+          <TileItem itemId={421} changeTileType={changeTileType} />
+          <TileItem itemId={422} changeTileType={changeTileType} />
+          <TileItem itemId={423} changeTileType={changeTileType} />
+          <TileItem itemId={424} changeTileType={changeTileType} />
+          <TileItem itemId={425} changeTileType={changeTileType} />
+          <TileItem itemId={426} changeTileType={changeTileType} />
+          <TileItem itemId={427} changeTileType={changeTileType} />
+          <TileItem itemId={428} changeTileType={changeTileType} />
+          <TileItem itemId={429} changeTileType={changeTileType} />
+          <TileItem itemId={430} changeTileType={changeTileType} />
+          <TileItem itemId={431} changeTileType={changeTileType} />
+          <TileItem itemId={432} changeTileType={changeTileType} />
+          <TileItem itemId={433} changeTileType={changeTileType} />
+          <TileItem itemId={434} changeTileType={changeTileType} />
+          <TileItem itemId={435} changeTileType={changeTileType} />
+          <TileItem itemId={436} changeTileType={changeTileType} />
+          <TileItem itemId={437} changeTileType={changeTileType} />
+          <TileItem itemId={438} changeTileType={changeTileType} />
+          <TileItem itemId={439} changeTileType={changeTileType} />
+          <TileItem itemId={440} changeTileType={changeTileType} />
+          <TileItem itemId={441} changeTileType={changeTileType} />
+          <TileItem itemId={442} changeTileType={changeTileType} />
+          <TileItem itemId={443} changeTileType={changeTileType} />
+          <TileItem itemId={444} changeTileType={changeTileType} />
+          <TileItem itemId={445} changeTileType={changeTileType} />
+          <TileItem itemId={446} changeTileType={changeTileType} />
+          <TileItem itemId={447} changeTileType={changeTileType} />
+          <TileItem itemId={448} changeTileType={changeTileType} />
+          <TileItem itemId={449} changeTileType={changeTileType} />
+          <TileItem itemId={450} changeTileType={changeTileType} />
+          <TileItem itemId={451} changeTileType={changeTileType} />
+          <TileItem itemId={452} changeTileType={changeTileType} />
+          <TileItem itemId={453} changeTileType={changeTileType} />
+          <TileItem itemId={454} changeTileType={changeTileType} />
+          <TileItem itemId={455} changeTileType={changeTileType} />
+          <TileItem itemId={456} changeTileType={changeTileType} />
+          <TileItem itemId={457} changeTileType={changeTileType} />
+          <TileItem itemId={458} changeTileType={changeTileType} />
+          <TileItem itemId={459} changeTileType={changeTileType} />
+          <TileItem itemId={460} changeTileType={changeTileType} />
+          <TileItem itemId={461} changeTileType={changeTileType} />
+          <TileItem itemId={462} changeTileType={changeTileType} />
+          <TileItem itemId={463} changeTileType={changeTileType} />
+          <TileItem itemId={464} changeTileType={changeTileType} />
+        </ul>
+
         <hr />
         <input
           type="range"

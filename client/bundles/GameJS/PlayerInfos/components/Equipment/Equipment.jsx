@@ -55,7 +55,7 @@ const Equipment = () => {
 			</div>
 
 			<div className="column">
-				<Backpack />
+				<Backpack equipped={equipment?.bag || null} />
 				<div className="slot">
 					<img src={EmptyShield} alt="shield" />
 				</div>
