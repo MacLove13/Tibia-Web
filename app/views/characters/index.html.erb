@@ -1,14 +1,20 @@
-<h1>Characters#index</h1>
+<div class="container-flex m-4">
+	<h1>Characters</h1><hr/>
 
-<div>
-	<ul>
-		<% @characters.each do |char| %>
-			<li>
-				<%= link_to "#{char.name} (#{char.level})", "/characters/play/#{char.id}" %>
-			</li>
-		<% end %>
-	</ul>
+	<div class="row">
+		<div class="col-md-2">
+			<ul class="list-group">
+				<% @characters.each do |char| %>
+					<a href="/characters/play/<%= char.id %>">
+						<li class="list-group-item">
+							<%= "#{char.name} | Lvl. #{char.level}" %>
+						</li>
+					</a>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	<br/>
+
+	<%= link_to 'Criar um personagem', '/characters/new', class: 'btn btn-success' %>
 </div>
-<br/>
-
-<%= link_to 'Criar um personagem', '/characters/new' %>

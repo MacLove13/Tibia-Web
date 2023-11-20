@@ -48,9 +48,6 @@ export class RenderingSystem implements ISystem {
             if (this.renderPlayer) {
                 var spriteComponent = <SpriteComponent> gameObjList[i].ComponentList[Componenets.Sprite];
                 if (spriteComponent) {
-
-                    console.log(spriteComponent);
-
                     var pos = {
                         x: positionComponent.PixelPosition.x + spriteComponent.SpriteOnTilePos.x,
                         y: positionComponent.PixelPosition.y + spriteComponent.SpriteOnTilePos.y

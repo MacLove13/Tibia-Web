@@ -26,11 +26,13 @@ export class NetworkSystem {
     private Initialized = false;
 
     connect(auth: string) {
-        const url = 'http://192.168.0.22:2137';
+        const url = 'http://localhost:2137';
 
-        this.socket = io.io(url, {
-            withCredentials: true
-        });
+        this.socket = io.io(url)
+
+        // {
+        //     withCredentials: true
+        // });
 
         this.socket.on('connect_error', (error) => {
             console.error('Connection Error:', error);
@@ -150,7 +152,7 @@ export class NetworkSystem {
             this.entityToModification.push({ ID: data.ID, Type: ModType.Teleport, Data: data.Data });
         });
 
-        this.socket.on("ApplyDommage", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
+        this.socket.on("ApplyDamage", (data: { AttackType: number; AttarckerID; TargetID; HitPoints: number }) => {
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Hit, Data: data.HitPoints });
         });
 
