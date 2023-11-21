@@ -49,9 +49,11 @@ const Backpack = ({ equipped }) => {
     imageUrl = require(`bundles/Images/${equipped.image}`);
   }
 
+  console.log(equipped)
+
 	return (
     <>
-      { equipped && <>
+      { equipped && equipped.uuid != null && <>
           <ContextMenuItem id={`equipment-backpack`} type="Backpack" useItem={useItem} />
       		<div
             className="slot"
@@ -63,7 +65,7 @@ const Backpack = ({ equipped }) => {
         </>
       }
 
-      { !imageUrl && <div className="slot">
+      { (!equipped || equipped.uuid == null) && !imageUrl && <div className="slot">
           <img src={EmptyBag} ref={drop} style={{ backgroundColor }} alt="bag" />
         </div>
       }

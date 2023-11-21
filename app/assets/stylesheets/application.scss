@@ -1,0 +1,52 @@
+
+body {
+	background-image: url('background.jpg');
+	background-size: auto;
+	background-repeat: no-repeat;
+}
+
+.card-tibia {
+	border-radius: 0 !important;
+
+	.card-body {
+		background-image: url('card-bg.gif');
+		border: 1px solid #3a3738;
+	}
+
+	.card-title {
+		height: 28px;
+		margin: 0 !important;
+		padding: 0;
+		border: 2px solid #3a3738;
+
+		color: white !important;
+		padding-left: 5px;
+		font-size: 18px;
+
+		font-family: 'martel', sans-serif;
+	}
+
+	.red {
+		background-image: url('card-title-bg.gif');
+	}
+
+	.green {
+		background-image: url('card-title-bg-green.gif');
+	}
+}
+
+
+
+.card-title-tibia-g {
+	background-image: url('card-title-bg-green.gif');
+	height: 28px;
+	margin: 0 !important;
+	padding: 0;
+	border: 2px solid #3a3738;
+
+	color: #edd83b !important;
+	padding-left: 5px;
+	font-size: 18px;
+
+	font-family: 'martel', sans-serif;
+}

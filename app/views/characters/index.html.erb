@@ -1,20 +1,37 @@
-<div class="container-flex m-4">
-	<h1>Characters</h1><hr/>
+<div class="container-fluid">
 
-	<div class="row">
+	<div class="row mt-5">
+		<div class="col-md-2"></div>
 		<div class="col-md-2">
-			<ul class="list-group">
-				<% @characters.each do |char| %>
-					<a href="/characters/play/<%= char.id %>">
-						<li class="list-group-item">
-							<%= "#{char.name} | Lvl. #{char.level}" %>
-						</li>
-					</a>
-				<% end %>
-			</ul>
+			<div class="card card-tibia">
+				<div class="card-title green">
+					Navegação
+				</div>
+				<div class="card-body">
+					<%= link_to 'Voltar ao Início', '/' %>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card card-tibia">
+				<div class="card-title red">
+					Meus personagens
+				</div>
+				<div class="card-body">
+					<small>Clique em um personagem para jogar:</small>
+					<ul class="list-group mt-2">
+						<% @characters.each do |char| %>
+							<a href="/characters/play/<%= char.id %>">
+								<li class="list-group-item">
+									<%= "#{char.name} | Lvl. #{char.level}" %>
+								</li>
+							</a>
+						<% end %>
+					</ul>
+
+					<%= link_to 'Criar um personagem', '/characters/new', class: 'btn btn-success mt-2' %>
+				</div>
+			</div>
 		</div>
 	</div>
-	<br/>
-
-	<%= link_to 'Criar um personagem', '/characters/new', class: 'btn btn-success' %>
 </div>
