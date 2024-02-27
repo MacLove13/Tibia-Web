@@ -15,6 +15,17 @@ const FoodMenu = ({ useItem, item_uuid }) => {
 	)
 }
 
+const PotionMenu = ({ useItem, item_uuid }) => {
+
+	return (
+		<>
+			<RightMenuItem name="Use" action={useItem} />
+			<RightMenuItem name={item_uuid} />
+			<RightMenuItem name="Look" />
+		</>
+	)
+}
+
 const WeaponMenu = ({ useItem }) => {
 
 	return (
@@ -53,6 +64,7 @@ const ContextMenuItem = ({ id, type, useItem, item_uuid }) => {
 	return (
 		<RightMenu id={id}>
 			{ type == 'Food' || type == 0 && <FoodMenu useItem={useItem} item_uuid={item_uuid} /> }
+			{ type == 'Potion' || type == 3 && <PotionMenu useItem={useItem} item_uuid={item_uuid} /> }
 			{ type == 'Sword' || type == 4 && <WeaponMenu useItem={useItem} /> }
 			{ type == 'Backpack' && <BackpackMenu useItem={useItem} /> }
 		</RightMenu>

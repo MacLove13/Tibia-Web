@@ -1,24 +1,67 @@
-<!-- app/views/characters/new.html.erb -->
-<h1>Criar Personagem</h1>
+<div class="container-fluid">
 
-<%= form_with(model: @character, local: true) do |form| %>
-  <% if @character.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@character.errors.count, "error") %> proibiu este personagem de ser salvo:</h2>
-      <ul>
-        <% @character.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <div class="row mt-5">
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <div class="card card-tibia">
+        <div class="card-title green">
+          Jogar
+        </div>
+        <div class="card-body text-center">
+          <% if current_account.present? %>
+            Olá, <%= current_account.username %><br/>
+            <div class="d-grid gap-2 mt-2">
+              <%= link_to 'Jogar', '/characters', class: 'btn btn-success' %>
+            </div>
+          <% else %>
+            Você ainda não está logado <br/><br/>
+
+            <a href="<%= new_account_session_path %>">Fazer login</a> <br/>
+
+            <a href="<%= new_account_registration_path %>">Criar minha conta</a>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card card-tibia mt-2">
+        <div class="card-title green">
+          Minha conta
+        </div>
+        <div class="card-body text-center">
+          <a href="<%= characters_path %>">Meus personagens</a>
+        </div>
+      </div>
+      
     </div>
-  <% end %>
+    <div class="col-md-6">
+      <div class="card card-tibia">
+        <div class="card-title red">
+          Criar personagem
+        </div>
+        <div class="card-body">
+          <%= form_with(model: @character, local: true) do |form| %>
+            <% if @character.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@character.errors.count, "error") %> proibiu este personagem de ser salvo:</h2>
+                <ul>
+                  <% @character.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
 
-  <div class="field">
-    <%= form.label :name, "Nome" %><br>
-    <%= form.text_field :name %>
-  </div>
+            <div class="field">
+              <%= form.label :name, "Nome" %><br>
+              <%= form.text_field :name %>
+            </div>
 
-  <div class="actions">
-    <%= form.submit "Criar Personagem" %>
+            <div class="actions mt-2">
+              <%= form.submit "Criar Personagem", class: 'btn btn-success' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>

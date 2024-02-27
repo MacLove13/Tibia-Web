@@ -7,7 +7,6 @@ export class CameraSystem implements ISystem {
     private cameraPosList = [];
     RequiredSygnature = Componenets.Camera + Componenets.Position;
 
-
     Process(world: World) {
         var objList = world.entityList;
         for (var i = 0; i < objList.length; i++) {
@@ -21,7 +20,6 @@ export class CameraSystem implements ISystem {
                 yy: positionComponent.TilePosition.y,
             });
         }
-
     }
 
     GetCamerasList(): Array<Vector2D> {

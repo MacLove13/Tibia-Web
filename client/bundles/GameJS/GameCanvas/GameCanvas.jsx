@@ -27,7 +27,7 @@ function GameCanvas({ isInitializedAll, setIsInitializedAll, gameSize }) {
   return (
     <>
       <canvas
-        id="GameCanvas"
+        id="GameCanvas-layer-0"
         className="game-canvas"
         width={gameSize.width}
         height={gameSize.height}

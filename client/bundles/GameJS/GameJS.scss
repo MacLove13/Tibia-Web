@@ -14,14 +14,6 @@ body {
 #GameArea {
 		float: left;
 		width: 100vh;
-
-		.chat-input {
-			position: fixed;
-			bottom: 20px;
-			left: 20px;
-			width: 800px;
-			background-color: white;
-		}
 }
 
 progress {

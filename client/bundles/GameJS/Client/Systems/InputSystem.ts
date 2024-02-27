@@ -5,15 +5,16 @@ import {config} from "../Init";
 import {Events, World} from "../World";
 import {Rotation, Vector2D} from "../Interchange/DataStructures";
 
+import GameInstance from '../../store/GameInit';
+
 export class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
-    private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
+    private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
     private canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
     private chatMsgs = new Array<string>();
     private mouseClicks = new Array<Vector2D>();
     RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input ;
-
 
     constructor() {
         this.Setup();
@@ -121,7 +122,9 @@ export class InputSystem implements ISystem {
             for (var entityIndex = 0; entityIndex < world.entityList.length; entityIndex++) {
                 if ((world.entityList[entityIndex].ComponentSygnature & (Componenets.Position + Componenets.Health)) !== (Componenets.Position + Componenets.Health))
                     continue;
+                
                 if (world.entityList[entityIndex].ID === gameObj.ID) continue;
+
                 var targetPosComp = <PositionComponent>world.entityList[entityIndex].ComponentList[Componenets.Position];
                 
                 if (targetPosComp.PixelPosition.x - 10 + config.TileSize > pos.x && targetPosComp.PixelPosition.x - 10 < pos.x) {
@@ -168,21 +171,38 @@ export class InputSystem implements ISystem {
             this.keys[keyEvent.keyCode] = false;
         });
 
-        addEventListener("keypress", (keyEvent) => {
-            this.ValidInput();
-            var key = keyEvent.keyCode || keyEvent.which;
-            if (document.activeElement === this.chatInput) {
-                keyEvent.preventDefault();
-            }
-            if (key === 13) {
-                this.chatMsgs.push(this.chatInput.value.substr(0, 55));
-                this.chatInput.value = "";
-                return;
-            }
-            if (key === 8) return;
-            if (key > 36 && key < 41) return;
-            this.chatInput.value += String.fromCharCode(key);
-        });
+        // addEventListener("keypress", (keyEvent) => {
+        //     this.ValidInput();
+        //     var key = keyEvent.keyCode || keyEvent.which;
+        //     if (document.activeElement === this.chatInput) {
+        //         keyEvent.preventDefault();
+        //     }
+        //     if (key === 13) {
+        //         if (this.chatInput.value[0] == "!") {
+        //             console.log("execute command")
+
+        //             let text = this.chatInput.value.substring(1);
+        //             let strline = text.split(" ");
+        //             let command = strline[0];
+        //             let args = strline.slice(1);
+
+        //             GameInstance.init.networkSystem.EmitServer("chat:command:execute", {
+        //                 cmd: command,
+        //                 args: args
+        //             });
+        //             return
+        //         }
+
+        //         return;
+        //         this.chatMsgs.push(this.chatInput.value.substr(0, 55));
+        //         this.chatInput.value = "";
+        //         return;
+        //     }
+
+        //     if (key === 8) return;
+        //     if (key > 36 && key < 41) return;
+        //     this.chatInput.value += String.fromCharCode(key);
+        // });
 
         const CreateCanvasClick = () => {
             if (this.canvas == undefined) return;
@@ -228,7 +248,7 @@ export class InputSystem implements ISystem {
 
         if (this.canvas == undefined) {
             var gameCanvasInterval = setInterval(() => {
-                this.canvas = <HTMLCanvasElement> document.getElementById("GameCanvas");
+                this.canvas = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
                 this.canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
 
                 if (this.canvas != undefined) {

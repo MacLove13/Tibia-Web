@@ -19,16 +19,14 @@ export class NetworkSystem {
     private newEntityList = [];
     private EntityToRemove = [];
     private entityToModification = new Array< { ID; Type; Data; }>();
-    enemiesList = [];
-    targetID = null;
-    private renderingSystem;
-    private renderingSystemLayer1;
+    private renderingSystem = [];
     private Initialized = false;
 
     connect(auth: string) {
         const url = 'http://localhost:2137';
 
-        this.socket = io.io(url)
+        // this.socket = io.io(url)
+        this.socket = io.io(url);
 
         // {
         //     withCredentials: true
@@ -53,9 +51,8 @@ export class NetworkSystem {
         this.Setup();
     }
 
-    SetRenderingSystem(renderingSystem, renderingSystemLayer1) {
-        this.renderingSystem = renderingSystem;
-        this.renderingSystemLayer1 = renderingSystemLayer1;
+    SetRenderingSystem(layer, renderingSystem) {
+        this.renderingSystem[layer] = renderingSystem;
     }
 
     Process(world: World) {
@@ -128,16 +125,11 @@ export class NetworkSystem {
         });
 
         this.socket.on("Game:UpdateMap", (data: any) => {
-
-            if (data.Layer == 0)
-                this.renderingSystem.UpdateMapTiles(data.Map);
-            else if (data.Layer == 1) {
-                this.renderingSystemLayer1.UpdateMapTiles(data.Map);
-            }
+            this.renderingSystem[data.Layer].UpdateMapTiles(data.Map);
         })
 
         this.socket.on("map:HoverYTile", (data: any) => {
-            this.renderingSystemLayer1.EnablePlayerHover(data.Toggle);
+            this.renderingSystem[1].EnablePlayerHover(data.Toggle);
         })
 
         this.socket.on("CharacterMessage", (data: { Msg: string, ID }) => {
@@ -162,10 +154,6 @@ export class NetworkSystem {
 
         this.socket.on("ApplyExperience", (data: { ID; Exp: number }) => {
             this.entityToModification.push({ ID: data.ID, Type: ModType.Exp, Data: data });
-        });
-
-        this.socket.on("BattleMenu", (data: { ID; Data; }) => {
-            this.entityToModification.push({ ID: data.ID, Type: ModType.BattleMenu, Data: data.Data });
         });
 
         this.socket.on("SpawnProjectile", (data) => {
@@ -292,11 +280,6 @@ export class NetworkSystem {
                         }
                     }
                 }
-
-                if (this.entityToModification[i].Type === ModType.BattleMenu) {
-                    this.enemiesList = this.entityToModification[i].Data.battleList;
-                    this.targetID = this.entityToModification[i].Data.TargetID;
-                }
             }
         }
     }
@@ -308,4 +291,4 @@ export class NetworkSystem {
     }
 }
 
-const enum ModType { Move, Teleport, Message, Hit, Exp, Heal, BattleMenu, Death };
+const enum ModType { Move, Teleport, Message, Hit, Exp, Heal, Death };

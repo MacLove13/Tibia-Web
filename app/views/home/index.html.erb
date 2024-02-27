@@ -7,17 +7,31 @@
 				<div class="card-title green">
 					Jogar
 				</div>
-				<div class="card-body">
-					Olá, <%= current_account.username %><br/>
+				<div class="card-body text-center">
 					<% if current_account.present? %>
+						Olá, <%= current_account.username %><br/>
 						<div class="d-grid gap-2 mt-2">
 							<%= link_to 'Jogar', '/characters', class: 'btn btn-success' %>
 						</div>
 					<% else %>
-						Você ainda não está logado
+						Você ainda não está logado <br/><br/>
+
+						<a href="<%= new_account_session_path %>">Fazer login</a> <br/>
+
+						<a href="<%= new_account_registration_path %>">Criar minha conta</a>
 					<% end %>
 				</div>
 			</div>
+
+			<div class="card card-tibia mt-2">
+				<div class="card-title green">
+					Minha conta
+				</div>
+				<div class="card-body text-center">
+					<a href="<%= characters_path %>">Meus personagens</a>
+				</div>
+			</div>
+			
 		</div>
 		<div class="col-md-6">
 			<div class="card card-tibia">
@@ -28,7 +42,7 @@
 					<p>Bem vindo ao projeto Tibia on Rails</p>
 					
 					<hr />
-					<p>Este é um projeto Open Source para construir uma versão de Tibia em ReactOnRails, Typescript e Ruby on Rails.</p>
+					<p>Este é um projeto Open Source para construir uma versão de Tibia em ReactOnRails, Typescript & Javascript e Ruby on Rails.</p>
 
 					<p>Confira o repositório deste projeto no Github:</p>
 				</div>

@@ -3,12 +3,13 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './GameJS.scss';
 
+import GameInstance from './store/GameInit';
+import GameCanvas from './GameCanvas/GameCanvas';
+
 import PlayerInfos from './PlayerInfos/container/PlayerInfos';
 import Notifications from './Notifications/Notifications';
 import TextNotification from './Notifications/TextNotification';
-import GameInstance from './store/GameInit';
-
-import GameCanvas from './GameCanvas/GameCanvas';
+import GameChat from './GameChat/container/GameChat';
 
 const GameJS = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -18,12 +19,6 @@ const GameJS = (props) => {
     width: undefined,
     height: undefined,
   });
-
-  const [inputText, setInputText] = useState("");
-
-  const changeInputText = (e) => {
-    setInputText(e.value)
-  };
 
   const disableRightClick = (e) => {
     e.preventDefault();
@@ -37,8 +32,8 @@ const GameJS = (props) => {
 
   function handleResize() {
     if (allSystemsInitialized.current) {
-      GameInstance.init.renderSystem.RisizedWindow();
-      GameInstance.init.renderSystemLayer1.RisizedWindow();
+      GameInstance.init.renderSystem[0].RisizedWindow();
+      GameInstance.init.renderSystem[1].RisizedWindow();
     }
 
     setWindowSize({
@@ -79,7 +74,7 @@ const GameJS = (props) => {
     <DndProvider backend={HTML5Backend}>
       <div id="GameArea" style={{ width: windowSize.width }}>
         <GameCanvas isInitializedAll={isInitializedAll} setIsInitializedAll={setIsInitializedAll} gameSize={windowSize} />
-        { isInitializedAll && <input type="text" id="ChatInput" className="chat-input" onChange={changeInputText} value={inputText} /> }
+        { isInitializedAll && <GameChat /> }
       </div>
 
       { isInitializedAll && <PlayerInfos /> }

@@ -22,8 +22,7 @@ export class Init {
   events;
   enemies;
   networkSystem: NetworkSystem;
-  renderSystem: RenderingSystem;
-  renderSystemLayer1: RenderingSystem;
+  renderSystem: RenderingSystem[];
   initialized: boolean;
 
   constructor() {
@@ -33,8 +32,19 @@ export class Init {
     this.events = Events;
     this.enemies = [];
     this.initialized = false;
+    this.renderSystem = [];
 
     this.networkSystem = new NetworkSystem();
+  }
+
+  ProcessAndRenderLayers(camerasList, world) {
+    // Layer 0
+    this.renderSystem[0].Process(world);
+    this.renderSystem[0].RenderAll(camerasList);
+
+    // Layer 1
+    this.renderSystem[1].Process(world);
+    this.renderSystem[1].RenderAll(camerasList);
   }
 
   Process(auth: string, setIsInitializedAll) {
@@ -50,16 +60,18 @@ export class Init {
     const configPromise = import("./resources/data.json");
     const spritePromise = loadImage(SpritesURL);
 
+    const InitializeMapLayer = (layer, configData, sprites) => {
+      const canvas = <HTMLCanvasElement>document.getElementById(`GameCanvas-layer-${layer}`);
+      var newLayer = new RenderingSystem(canvas, sprites, layer);
+      this.renderSystem.push(newLayer);
+    };
+
     Promise.all([configPromise, spritePromise])
       .then(([configData, sprites]) => {
         config = configData.default as Config;
-        const canvas = <HTMLCanvasElement>document.getElementById("GameCanvas");
-        renderingSystem = new RenderingSystem(canvas, sprites);
-        this.renderSystem = renderingSystem;
 
-        const canvasLayer1 = <HTMLCanvasElement>document.getElementById("GameCanvas-layer-1");
-        renderingSystemLayer1 = new RenderingSystem(canvasLayer1, sprites, 1);
-        this.renderSystemLayer1 = renderingSystemLayer1;
+        InitializeMapLayer(0, configData, sprites);
+        InitializeMapLayer(1, configData, sprites);
 
         this.gameObj.ID = 1541515125;
         this.gameObj.AddComponent(new PositionComponent(0, 0));
@@ -67,7 +79,9 @@ export class Init {
         this.world.Add(this.gameObj);
         this.networkSystem.connect(auth);
         requestAnimationFrame(Loop);
-        this.networkSystem.SetRenderingSystem(renderingSystem, renderingSystemLayer1);
+
+        this.networkSystem.SetRenderingSystem(0, this.renderSystem[0]);
+        this.networkSystem.SetRenderingSystem(1, this.renderSystem[1]);
       });
 
     const Loop = () => {
@@ -82,14 +96,7 @@ export class Init {
       userInterfaceSystem.Process(this.world);
 
       const camerasList = cameraSystem.GetCamerasList();
-      
-      // Layer 0
-      renderingSystem.Process(this.world);
-      renderingSystem.RenderAll(camerasList);
-
-      // Layer 1
-      renderingSystemLayer1.Process(this.world);
-      renderingSystemLayer1.RenderAll(camerasList);
+      this.ProcessAndRenderLayers(camerasList, this.world);
 
       this.world.ClearEvents();
       requestAnimationFrame(Loop);

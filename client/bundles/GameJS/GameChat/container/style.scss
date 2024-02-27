@@ -1,0 +1,83 @@
+.chat-container {
+	position: fixed;
+	bottom: 0;
+	height: 200px;
+  background-image: url(../Images/background.gif);
+  border-right: 1px solid black;
+
+  .conversations {
+  	height: 190px;
+  	padding: 5px 10px 10px 5px;
+  	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.2)), to(rgba(0, 0, 0, 0.1))), url(../Images/background.gif);
+  	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	border-top: 1px solid black;
+
+  	ul {
+  		margin: 0;
+  		padding: 0;
+  		margin-left: 15px;
+  		list-style: none;
+
+  		li {
+  			background: gray;
+  			font-size: 12px;
+  			float: left;
+  			color: white;
+  			padding: 2px 8px;
+  			border-left: 1px solid black;
+  			border-top: 1px solid black;
+  			border-bottom: 1px solid black;
+
+  			&:last-child {
+  				border-right: 1px solid black;
+  			}
+
+  		}
+  	}
+
+  	.chat-box {
+  		border: 1px solid black;
+  		height: 155px;
+  		margin-top: 23px;
+  		padding: 5px;
+  		background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+    	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+    	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+    	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+    	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.1))), url(../Images/background.gif);
+    	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+
+  		.conversation {
+			  background-image: url(../Images/background.gif);
+  			height: 125px;
+  			color: white;
+  			padding: 0 5px;
+  			overflow-y: scroll;
+  			font-size: 12px;
+  			padding-bottom: 5px;
+
+  			ul {
+  				margin-left: 0;
+
+  				li {
+  					background: none;
+  					border: none;
+  					float: none;
+  				}
+  			}
+  		}
+  	}
+
+  	.chat-input {
+  		background-image: url(../Images/background.gif);
+			width: 99.3%;
+			color: white;
+			font-size: 12px;
+			padding: 2px;
+		}
+  }
+}

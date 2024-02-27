@@ -9,10 +9,31 @@
 #   end
 
 
+ItemTemplate.find_by(name: 'Mochila')&.delete
+Map::Tile.where("x = 0 AND y = 0")&.delete_all
+
 ItemTemplate.create(
 	name: 'Mochila',
 	description: 'Mochila comum de um viajante.',
 	type: 1,
 	vocation: 0,
 	image: 'Backpacks/Default.gif'
+)
+
+Map::Tile.create(
+	x: 0,
+	y:0,
+	walkable: true,
+	tile_type: '2',
+	safe_zone: true,
+	layer: 0
+)
+
+Map::Tile.create(
+	x: 0,
+	y:0,
+	walkable: true,
+	tile_type: '2',
+	safe_zone: true,
+	layer: 1
 )
