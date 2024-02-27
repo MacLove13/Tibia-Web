@@ -148,7 +148,8 @@ export class NetworkSystem {
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Hit, Data: data.HitPoints });
         });
 
-        this.socket.on("SelfHeal", (data: { TargetID; Health: number }) => {
+        this.socket.on("SelfHeal", (data: { TargetID; Health; }) => {
+            console.log(data)
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Heal, Data: data.Health });
         });
 
@@ -248,7 +249,6 @@ export class NetworkSystem {
                     } else {
                         chMsg.Str = this.entityToModification[i].Data;
                     }
-
                 }
 
                 if (this.entityToModification[i].Type === ModType.Hit) {
@@ -261,6 +261,8 @@ export class NetworkSystem {
                 }
 
                 if (this.entityToModification[i].Type === ModType.Heal) {
+
+                    console.log(this.entityToModification[i])
                     var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
                     if (healthComponent) {
                         healthComponent.SetHP(this.entityToModification[i].Data);

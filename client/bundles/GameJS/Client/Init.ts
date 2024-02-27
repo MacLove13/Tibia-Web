@@ -49,7 +49,6 @@ export class Init {
 
   Process(auth: string, setIsInitializedAll) {
     var renderingSystem: RenderingSystem;
-    var renderingSystemLayer1: RenderingSystem;
 
     var cameraSystem = new CameraSystem();
     

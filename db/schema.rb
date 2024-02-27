@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_06_152959) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_27_170918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -67,9 +67,27 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_152959) do
     t.json "position", default: {"x"=>60, "y"=>50}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "actual_city", default: 0, null: false
+    t.integer "nation", default: 0, null: false
+    t.integer "nation_class", default: 1, null: false
+    t.integer "nation_exp", default: 0, null: false
+    t.string "traits", default: [], array: true
+    t.integer "skill", default: 0, null: false
+    t.integer "sub_skill", default: 0, null: false
+    t.integer "guild_id", default: 0, null: false
     t.index ["account_id"], name: "index_characters_on_account_id"
     t.index ["name"], name: "index_characters_on_name", unique: true
     t.index ["uuid"], name: "index_characters_on_uuid", unique: true
+  end
+
+  create_table "guilds", force: :cascade do |t|
+    t.string "name"
+    t.string "points", default: "0", null: false
+    t.integer "created_by", default: 0, null: false
+    t.boolean "accept_new_members", default: false, null: false
+    t.integer "base_city_id", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "item_templates", force: :cascade do |t|
@@ -114,6 +132,48 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_152959) do
     t.boolean "safe_zone", default: false, null: false
     t.integer "owner", default: 0, null: false
     t.integer "layer", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "nation_cities", force: :cascade do |t|
+    t.string "name"
+    t.integer "nation_id", default: 0, null: false
+    t.integer "king_id", default: 0, null: false
+    t.integer "king_npc_id", default: 0, null: false
+    t.integer "king_guild_id", default: 0, null: false
+    t.integer "ownership_type", default: 0, null: false
+    t.json "position_x", default: {"x"=>60, "y"=>50}, null: false
+    t.json "position_y", default: {"x"=>60, "y"=>50}, null: false
+    t.json "position_spawn", default: {"x"=>60, "y"=>50}, null: false
+    t.json "position_revive", default: {"x"=>60, "y"=>50}, null: false
+    t.integer "upgrade_points", default: 0, null: false
+    t.integer "citizens_count", default: 0, null: false
+    t.integer "citizens_npc_count", default: 0, null: false
+    t.integer "homes_count", default: 0, null: false
+    t.integer "shops_count", default: 0, null: false
+    t.integer "guards_count", default: 0, null: false
+    t.integer "prosperity", default: 0, null: false
+    t.integer "gold", default: 0, null: false
+    t.integer "food", default: 0, null: false
+    t.integer "wood", default: 0, null: false
+    t.integer "iron", default: 0, null: false
+    t.integer "water", default: 0, null: false
+    t.integer "stone", default: 0, null: false
+    t.integer "farm_fields", default: 0, null: false
+    t.integer "water_points", default: 0, null: false
+    t.integer "stone_points", default: 0, null: false
+    t.integer "fire_points", default: 0, null: false
+    t.float "defense_power", default: 0.0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ownership_type"], name: "index_nation_cities_on_ownership_type"
+  end
+
+  create_table "nations", force: :cascade do |t|
+    t.string "name"
+    t.integer "members_count", default: 0, null: false
+    t.float "power", default: 0.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

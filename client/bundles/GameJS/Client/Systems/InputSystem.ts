@@ -40,7 +40,27 @@ export class InputSystem implements ISystem {
         var inputSystem = <InputComponent> gameObj.ComponentList[Componenets.Input];
         if (movementComponent.IsMoving) return;
 
-        if (this.keys[37]) {
+        if (this.keys[37] && this.keys[38]) {
+            positionComponent.Rotation = Rotation.Left;
+            if (inputSystem.IsAlive)
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Left,
+                Pos: { x: positionComponent.TilePosition.x - 1, y: positionComponent.TilePosition.y - 1 }
+            });
+            movementComponent.SetTarget(positionComponent.TilePosition.x - 1, positionComponent.TilePosition.y);
+            return;
+        }
+        else if (this.keys[40] && this.keys[39]) {
+            positionComponent.Rotation = Rotation.Left;
+            if (inputSystem.IsAlive)
+            world.PushEvent(gameObj, Events.PlayerMove, {
+                Rot: Rotation.Left,
+                Pos: { x: positionComponent.TilePosition.x - 1, y: positionComponent.TilePosition.y - 1 }
+            });
+            movementComponent.SetTarget(positionComponent.TilePosition.x - 1, positionComponent.TilePosition.y);
+            return;
+        }
+        else if (this.keys[37]) {
             positionComponent.Rotation = Rotation.Left;
             if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
@@ -50,8 +70,7 @@ export class InputSystem implements ISystem {
             movementComponent.SetTarget(positionComponent.TilePosition.x - 1, positionComponent.TilePosition.y);
             return;
         }
-
-        if (this.keys[38]) {
+        else if (this.keys[38]) {
             positionComponent.Rotation = Rotation.Top;
             if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
@@ -62,8 +81,7 @@ export class InputSystem implements ISystem {
             movementComponent.SetTarget(positionComponent.TilePosition.x, positionComponent.TilePosition.y - 1);
             return;
         }
-
-        if (this.keys[39]) {
+        else if (this.keys[39]) {
             positionComponent.Rotation = Rotation.Right;
             if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
@@ -73,8 +91,7 @@ export class InputSystem implements ISystem {
             movementComponent.SetTarget(positionComponent.TilePosition.x + 1, positionComponent.TilePosition.y);
             return;
         }
-
-        if (this.keys[40]) {
+        else if (this.keys[40]) {
             positionComponent.Rotation = Rotation.Down;
             if (inputSystem.IsAlive)
             world.PushEvent(gameObj, Events.PlayerMove, {
