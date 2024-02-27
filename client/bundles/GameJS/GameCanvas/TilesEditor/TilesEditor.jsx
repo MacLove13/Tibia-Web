@@ -517,6 +517,7 @@ function TilesEditor({ canvasRef, subscription }) {
         <hr />
         Current Position<br/>
         X: {playerPosition.x}, Y: {playerPosition.y}
+        <br/><br/>
       </div>
     </div>
   );

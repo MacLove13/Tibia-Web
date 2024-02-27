@@ -10,14 +10,20 @@ import GameInstance from '../../store/GameInit';
 export class InputSystem implements ISystem {
     private keys = new Array<boolean>(200);
     private chatInput = <HTMLInputElement>document.getElementById("ChatInput");
-    private canvas = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
-    private canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
+    private canvas: HTMLCanvasElement[] = [];
+
     private chatMsgs = new Array<string>();
     private mouseClicks = new Array<Vector2D>();
     RequiredSygnature = Componenets.Position + Componenets.Movement + Componenets.Input ;
 
     constructor() {
         this.Setup();
+        this.initCanvas();
+    }
+
+    private initCanvas(): void {
+        this.canvas[0] = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
+        this.canvas[1] = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
     }
 
     Process(world: World) {
@@ -115,8 +121,8 @@ export class InputSystem implements ISystem {
         var cameraposcomp = <PositionComponent>gameObj.ComponentList[Componenets.Position];
         for (var i = 0; i < this.mouseClicks.length; i++) {
             var pos = {
-                x: this.mouseClicks[i].x + cameraposcomp.PixelPosition.x - this.canvas.width / 2,
-                y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas.height / 2
+                x: this.mouseClicks[i].x + cameraposcomp.PixelPosition.x - this.canvas[0].width / 2,
+                y: this.mouseClicks[i].y + cameraposcomp.PixelPosition.y - this.canvas[0].height / 2
             };
 
             const TILE_SIZE = 32;
@@ -124,11 +130,11 @@ export class InputSystem implements ISystem {
             const x = this.mouseClicks[i].x;
             const y = this.mouseClicks[i].y;
             const tileSize = 2 * TILE_SIZE;
-            const removeDivisorX = (this.canvas.width % TILE_SIZE);
-            const removeDivisorY = (this.canvas.height % TILE_SIZE);
+            const removeDivisorX = (this.canvas[0].width % TILE_SIZE);
+            const removeDivisorY = (this.canvas[0].height % TILE_SIZE);
             
-            const left = cameraposcomp.TilePosition.x - Math.round((this.canvas.width - removeDivisorX) / tileSize);
-            const top = cameraposcomp.TilePosition.y - Math.round((this.canvas.height - removeDivisorY) / tileSize);
+            const left = cameraposcomp.TilePosition.x - Math.round((this.canvas[0].width - removeDivisorX) / tileSize);
+            const top = cameraposcomp.TilePosition.y - Math.round((this.canvas[0].height - removeDivisorY) / tileSize);
 
             const tileX = Math.floor(x / TILE_SIZE) + left;
             const tileY = Math.floor(y / TILE_SIZE) + top;
@@ -222,8 +228,8 @@ export class InputSystem implements ISystem {
         // });
 
         const CreateCanvasClick = () => {
-            if (this.canvas == undefined) return;
-            this.canvas.addEventListener("click", (e) => {
+            if (this.canvas[0] == undefined) return;
+            this.canvas[0].addEventListener("click", (e) => {
                 var x;
                 var y;
                 if (e.pageX || e.pageY) {
@@ -234,8 +240,8 @@ export class InputSystem implements ISystem {
                     x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
                     y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
                 }
-                x -= this.canvas.offsetLeft;
-                y -= this.canvas.offsetTop;
+                x -= this.canvas[0].offsetLeft;
+                y -= this.canvas[0].offsetTop;
 
                 this.mouseClicks.push({ x: x, y: y });
 
@@ -243,8 +249,8 @@ export class InputSystem implements ISystem {
         }
 
         const CreateCanvasClickLayer1 = () => {
-            if (this.canvas1 == undefined) return;
-            this.canvas1.addEventListener("click", (e) => {
+            if (this.canvas[1] == undefined) return;
+            this.canvas[1].addEventListener("click", (e) => {
                 var x;
                 var y;
                 if (e.pageX || e.pageY) {
@@ -255,20 +261,20 @@ export class InputSystem implements ISystem {
                     x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
                     y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
                 }
-                x -= this.canvas1.offsetLeft;
-                y -= this.canvas1.offsetTop;
+                x -= this.canvas[1].offsetLeft;
+                y -= this.canvas[1].offsetTop;
 
                 this.mouseClicks.push({ x: x, y: y });
 
             });
         }
 
-        if (this.canvas == undefined) {
+        if (this.canvas[0] == undefined) {
             var gameCanvasInterval = setInterval(() => {
-                this.canvas = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
-                this.canvas1 = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
+                this.canvas[0] = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-0");
+                this.canvas[1] = <HTMLCanvasElement> document.getElementById("GameCanvas-layer-1");
 
-                if (this.canvas != undefined) {
+                if (this.canvas[0] != undefined) {
                     clearInterval(gameCanvasInterval);
                     CreateCanvasClick();
                     CreateCanvasClickLayer1();

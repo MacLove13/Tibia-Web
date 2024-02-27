@@ -18,6 +18,14 @@
 	    border: 2px solid #303435;
 	    height: 80px;
 
+	    .close-item-menu {
+	    	position: absolute;
+		    z-index: 5;
+		    right: 3px;
+		    top: -5px;
+		    font-size: 14px;
+	    }
+
 	    .menu-title {
 		    display: -webkit-box;
 		    display: -webkit-flex;

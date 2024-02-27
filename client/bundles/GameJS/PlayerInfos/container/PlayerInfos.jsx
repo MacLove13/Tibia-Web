@@ -28,8 +28,6 @@ const PlayerInfos = ({ Init }) => {
 
   useEffect(() => {
 	  socket.on("Character:ShowBag", (data) => {
-		  console.log(data);
-
 		  setOpenedWindows(prevWinds => {
 			  const existingWindowIndex = prevWinds.findIndex(wind => wind.uuid === data.uuid);
 			    
@@ -45,7 +43,7 @@ const PlayerInfos = ({ Init }) => {
 			      return wind;
 			    });
 			  }
-			    
+
 			  return [
 			    ...prevWinds,
 			    {
@@ -60,6 +58,11 @@ const PlayerInfos = ({ Init }) => {
 		});
 	}, []);
 
+	const closeItemMenu = (indexToRemove) => {
+	  let newOpenedWindows = openedWindows.filter((item, index) => index !== indexToRemove);
+	  setOpenedWindows(newOpenedWindows)
+	}
+
 	return (
 		<div className="player-infos">
 			<Equipment />
@@ -68,7 +71,7 @@ const PlayerInfos = ({ Init }) => {
 
 				if (wind.type == 'Battle') {
 					return (
-						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight}>
+						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight} close={() => closeItemMenu(index)}>
 							<Battle />
 						</ItemMenu>
 					)
@@ -76,7 +79,7 @@ const PlayerInfos = ({ Init }) => {
 
 				else if (wind.type == 'Skills') {
 					return (
-						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight}>
+						<ItemMenu key={`wind-battle-${index}`} maxHeight={wind.maxHeight} close={() => closeItemMenu(index)}>
 							<Skills />
 						</ItemMenu>
 					)
@@ -84,7 +87,7 @@ const PlayerInfos = ({ Init }) => {
 
 				else if (wind.type == 'Backpack') {
 					return (
-						<ItemMenu key={`wind-backpack-${index}`} maxHeight={wind.maxHeight}>
+						<ItemMenu key={`wind-backpack-${index}`} maxHeight={wind.maxHeight} close={() => closeItemMenu(index)}>
 							<Backpack slots={wind.slots} items={wind.items} uuid={wind.uuid} />
 						</ItemMenu>
 					)

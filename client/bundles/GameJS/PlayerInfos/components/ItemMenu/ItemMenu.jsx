@@ -5,6 +5,7 @@ import './ItemMenu.scss';
 
 const ItemMenu = ({
 	children,
+	close,
 	height = 100,
 	minHeight = 50,
 	maxHeight = 100,
@@ -35,6 +36,7 @@ const ItemMenu = ({
 	        	height: windowHeight + 'px'
 	       	}}
 				>
+		  		<div className="close-item-menu" onClick={close}>x</div>
 					{ children }
 				</div>
 			</Resizable>

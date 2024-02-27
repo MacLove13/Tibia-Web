@@ -49,8 +49,6 @@ const Backpack = ({ equipped }) => {
     imageUrl = require(`bundles/Images/${equipped.image}`);
   }
 
-  console.log(equipped)
-
 	return (
     <>
       { equipped && equipped.uuid != null && <>
