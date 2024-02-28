@@ -27,10 +27,10 @@ export class NetworkSystem {
         if (this.FailToInitialize) return;
 
         console.log("Starting socket connection v0.0.1");
-        const url = 'http://192.99.177.163:2137';
+        const url = 'https://192.99.177.163:2137';
 
         // this.socket = io.io(url)
-        this.socket = io.io(url);
+        this.socket = io.io(url, { reconnection: false });
 
         // {
         //     withCredentials: true
@@ -39,16 +39,19 @@ export class NetworkSystem {
         this.socket.on('connect_error', (error) => {
             console.error('Connection Error:', error);
             this.FailToInitialize = true;
+            this.socket.disconnect();
         });
 
         this.socket.on('connect_timeout', (timeout) => {
             console.error('Conexão expirou após', timeout);
             this.FailToInitialize = true;
+            this.socket.disconnect();
         });
 
         this.socket.on('error', (error) => {
             console.error('Erro no Socket.IO:', error);
             this.FailToInitialize = true;
+            this.socket.disconnect();
         });
 
         this.socket.on('connect', () => {

@@ -43,8 +43,6 @@ jobs:
 
           # Prepare Front
           RAILS_ENV=production bundle exec rake assets:precompile
-          RAILS_ENV=production bundle exec rake react_on_rails:assets:webpack
-          bin/shakapacker
           
           # Reinicie o servidor web / aplicação conforme necessário
           # Exemplo com Passenger:
