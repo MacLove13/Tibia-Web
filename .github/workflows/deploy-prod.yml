@@ -1,0 +1,33 @@
+name: Deploy Rails Application
+
+on:
+  push:
+    branches:
+      - main  # Ou sua branch de produção
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+
+    - name: Deploy to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
+          cd ~/tibia/web
+          git pull
+          bundle install
+          yarn install --check-files
+          rails db:migrate RAILS_ENV=production
+          rails assets:precompile
+          # Reinicie o servidor web / aplicação conforme necessário
+          # Exemplo com Passenger:
+          # passenger-config restart-app /path/to/your/app
+          rails s -p 3030
+        EOF
