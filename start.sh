@@ -3,6 +3,7 @@
 source /root/.bashrc
 source /usr/local/rvm/scripts/rvm
 source /root/.nvm/nvm.sh
+source /root/tibia/web/.env
 
 nvm install 16
 rvm use 3.2.2
