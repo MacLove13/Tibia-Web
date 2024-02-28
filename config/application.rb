@@ -23,5 +23,7 @@ module Tibiajs
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.hosts << "tibia.freezehost.com.br"
   end
 end
