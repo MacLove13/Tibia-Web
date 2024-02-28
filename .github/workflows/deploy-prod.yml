@@ -1,9 +1,9 @@
-name: Deploy Rails Application
+name: Deploy Prod
 
 on:
   push:
     branches:
-      - main  # Ou sua branch de produção
+      - main
 
 jobs:
   deploy:
