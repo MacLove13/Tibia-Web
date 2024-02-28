@@ -21,8 +21,10 @@ export class NetworkSystem {
     private entityToModification = new Array< { ID; Type; Data; }>();
     private renderingSystem = [];
     private Initialized = false;
+    private FailToInitialize = false;
 
     connect(auth: string) {
+        if (this.FailToInitialize) return;
 
         console.log("Starting socket connection v0.0.1");
         const url = 'http://192.99.177.163:2137';
@@ -36,21 +38,28 @@ export class NetworkSystem {
 
         this.socket.on('connect_error', (error) => {
             console.error('Connection Error:', error);
+            this.FailToInitialize = true;
         });
 
         this.socket.on('connect_timeout', (timeout) => {
             console.error('Conexão expirou após', timeout);
+            this.FailToInitialize = true;
         });
 
         this.socket.on('error', (error) => {
             console.error('Erro no Socket.IO:', error);
+            this.FailToInitialize = true;
         });
 
-        this.socket.emit("onPlayerConnect", {
-            Auth: auth
-        });
+        this.socket.on('connect', () => {
+            console.log('Conectado com sucesso ao Socket.IO!');
+            this.FailToInitialize = false;
+            this.socket.emit("onPlayerConnect", {
+                Auth: auth
+            });
 
-        this.Setup();
+            this.Setup();
+        });
     }
 
     SetRenderingSystem(layer, renderingSystem) {
