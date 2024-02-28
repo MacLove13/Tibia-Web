@@ -40,9 +40,6 @@ jobs:
           rails db:migrate RAILS_ENV=production
           
           yarn install --check-files
-
-          # Prepare Front
-          RAILS_ENV=production bundle exec rake assets:precompile
           
           # Reinicie o servidor web / aplicação conforme necessário
           # Exemplo com Passenger:
