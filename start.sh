@@ -23,4 +23,4 @@ sudo chown -R $USER tmp
 sudo chown -R $USER public
 
 echo "Run Rails Server"
-bundle exec puma -C /root/tibia/web/config/puma.rb
+sudo systemctl restart tibia_web.service
