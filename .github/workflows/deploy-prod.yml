@@ -39,15 +39,16 @@ jobs:
           # Update
           git pull
           bundle install
+          rails db:migrate RAILS_ENV=production
+          
           yarn install --check-files
 
           # Prepare Front
           yarn run build
           RAILS_ENV=production bundle exec rake assets:precompile
           RAILS_ENV=production bundle exec rake react_on_rails:assets:webpack
+          bin/shakapacker
           
-          rails db:migrate RAILS_ENV=production
-          rails assets:precompile
           # Reinicie o servidor web / aplicação conforme necessário
           # Exemplo com Passenger:
           # passenger-config restart-app /path/to/your/app
