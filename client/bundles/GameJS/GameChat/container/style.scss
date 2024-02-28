@@ -2,18 +2,18 @@
 	position: fixed;
 	bottom: 0;
 	height: 200px;
-  background-image: url(../Images/background.gif);
+  background-image: url(../images/background.gif);
   border-right: 1px solid black;
 
   .conversations {
   	height: 190px;
   	padding: 5px 10px 10px 5px;
-  	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
-  	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
-  	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
-  	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
-  	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.2)), to(rgba(0, 0, 0, 0.1))), url(../Images/background.gif);
-  	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/background.gif);
+  	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../images/background.gif);
+  	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../images/background.gif);
+  	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../images/background.gif);
+  	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../images/background.gif);
+  	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.2)), to(rgba(0, 0, 0, 0.1))), url(../images/background.gif);
+  	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../images/background.gif);
   	border-top: 1px solid black;
 
   	ul {
@@ -44,15 +44,15 @@
   		height: 155px;
   		margin-top: 23px;
   		padding: 5px;
-  		background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
-    	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
-    	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
-    	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
-    	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.1))), url(../Images/background.gif);
-    	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Images/background.gif);
+  		background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/background.gif);
+    	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/background.gif);
+    	background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/background.gif);
+    	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/background.gif);
+    	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.1))), url(../images/background.gif);
+    	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/background.gif);
 
   		.conversation {
-			  background-image: url(../Images/background.gif);
+			  background-image: url(../images/background.gif);
   			height: 125px;
   			color: white;
   			padding: 0 5px;
@@ -73,7 +73,7 @@
   	}
 
   	.chat-input {
-  		background-image: url(../Images/background.gif);
+  		background-image: url(../images/background.gif);
 			width: 99.3%;
 			color: white;
 			font-size: 12px;

@@ -54,5 +54,5 @@ jobs:
           # passenger-config restart-app /path/to/your/app
           # bin/rails s -p 3030 RAILS_ENV=production
 
-          bundle exec puma -e production -p 3030
+          bundle exec puma -e production -p 3030 -d
         EOF
