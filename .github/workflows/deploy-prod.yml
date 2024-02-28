@@ -28,8 +28,6 @@ jobs:
           nvm install 16
           rvm use 3.2.2
           nvm use 16
-          
-          sudo kill -9 `sudo lsof -t -i:3030`
 
           # Remove layout
           rake assets:clobber
@@ -44,7 +42,6 @@ jobs:
           yarn install --check-files
 
           # Prepare Front
-          yarn run build
           RAILS_ENV=production bundle exec rake assets:precompile
           RAILS_ENV=production bundle exec rake react_on_rails:assets:webpack
           bin/shakapacker
