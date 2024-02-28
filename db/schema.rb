@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_27_170918) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_27_202605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -132,6 +132,37 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_170918) do
     t.boolean "safe_zone", default: false, null: false
     t.integer "owner", default: 0, null: false
     t.integer "layer", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mob_spawns", force: :cascade do |t|
+    t.json "position", default: {}, null: false
+    t.integer "created_by", default: 0, null: false
+    t.integer "spawn_mobs", default: 0, null: false
+    t.string "mobs_template", default: [], array: true
+    t.integer "min_mob_level", default: 1, null: false
+    t.integer "max_mob_level", default: 1, null: false
+    t.boolean "enabled", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mob_templates", force: :cascade do |t|
+    t.string "name", default: "Mob", null: false
+    t.string "alive_sprites", default: [], array: true
+    t.string "dead_sprites", default: [], array: true
+    t.string "max_damage_attack", default: "2", null: false
+    t.integer "speed", default: 80, null: false
+    t.integer "experience", default: 0, null: false
+    t.integer "hp", default: 50, null: false
+    t.boolean "hostile", default: false, null: false
+    t.boolean "run_away_when_attacked", default: false, null: false
+    t.json "possible_drops", default: {}, null: false
+    t.integer "level_min", default: 1, null: false
+    t.integer "level_max", default: 1, null: false
+    t.integer "decompose_ticks_frame", default: 4000, null: false
+    t.integer "element_base", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

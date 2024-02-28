@@ -224,6 +224,8 @@ function TilesEditor({ canvasRef, subscription }) {
 
       <div className="tile-types">
         <ul>
+          <TileItem itemId={-990} changeTileType={changeTileType} />
+
           <TileItem itemId={-1} changeTileType={changeTileType} />
           <TileItem itemId={3} changeTileType={changeTileType} />
           <TileItem itemId={4} changeTileType={changeTileType} />

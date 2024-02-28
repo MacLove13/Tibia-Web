@@ -1,0 +1,2 @@
+class MobTemplate < ApplicationRecord
+end

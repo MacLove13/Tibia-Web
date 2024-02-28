@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  position: 
+  created_by: 1
+  spawn_mobs: 1
+  mobs_template: MyString
+  min_mob_level: 1
+  max_mob_level: 1
+  disabled: false
+
+two:
+  position: 
+  created_by: 1
+  spawn_mobs: 1
+  mobs_template: MyString
+  min_mob_level: 1
+  max_mob_level: 1
+  disabled: false

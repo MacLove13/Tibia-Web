@@ -90,6 +90,11 @@ export class NetworkSystem {
     private Setup() {
         this.socket.on("NewCharacters", (data: NewCharacterData[]) => {
             for (var i = 0; i < data.length; i++) {
+
+                console.log("AliveSprites")
+                console.log(data[i].Race)
+                console.log(config.Mobs[data[i].Race].AliveSprites[0])
+
                 var gameObj = new GameObj();
                 gameObj.ID = data[i].ID;
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
@@ -111,6 +116,11 @@ export class NetworkSystem {
         this.socket.on("PlayerStart", (data: NewCharacterData) => {
             var gameObj = new GameObj();
             gameObj.ID = data.ID;
+
+
+            console.log("AliveSprites")
+            console.log(config.Mobs[data.Race].AliveSprites)
+
             gameObj.AddComponent(new PositionComponent(data.Position.x, data.Position.y, Rotation.Down));
             gameObj.AddComponent(new MovementComponent(data.Speed));
             gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites, 5));

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  alive_sprites: MyString
+  dead_sprites: MyString
+  speed: 1
+  experience: 1
+  hp: 1
+  hostile: 1
+  possible_drops: 
+
+two:
+  alive_sprites: MyString
+  dead_sprites: MyString
+  speed: 1
+  experience: 1
+  hp: 1
+  hostile: 1
+  possible_drops: 
