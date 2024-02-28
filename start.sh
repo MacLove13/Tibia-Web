@@ -11,10 +11,16 @@ nvm use 16
 ruby -v
 node -v
 
-sudo kill -9 `sudo lsof -t -i:3030`
+PORT=3030
+PID=$(lsof -ti:$PORT)
+
+if [ ! -z "$PID" ]; then
+  echo "Killing process on port $PORT"
+  sudo kill -9 $PID
+fi
 
 sudo chown -R $USER tmp
 sudo chown -R $USER public
 
 echo "Run Rails Server"
-bundle exec puma -C /tibia/web/config/puma.rb
+bundle exec puma -C /root/tibia/web/config/puma.rb
