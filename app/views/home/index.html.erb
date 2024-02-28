@@ -23,15 +23,16 @@
 				</div>
 			</div>
 
-			<div class="card card-tibia mt-2">
-				<div class="card-title green">
-					Minha conta
+			<% if current_account.present? %>
+				<div class="card card-tibia mt-2">
+					<div class="card-title green">
+						Minha conta
+					</div>
+					<div class="card-body text-center">
+						<a href="<%= characters_path %>">Meus personagens</a>
+					</div>
 				</div>
-				<div class="card-body text-center">
-					<a href="<%= characters_path %>">Meus personagens</a>
-				</div>
-			</div>
-			
+			<% end %>
 		</div>
 		<div class="col-md-6">
 			<div class="card card-tibia">

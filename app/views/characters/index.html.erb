@@ -12,26 +12,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="card card-tibia">
-				<div class="card-title red">
-					Meus personagens
-				</div>
-				<div class="card-body">
-					<small>Clique em um personagem para jogar:</small>
-					<ul class="list-group mt-2">
-						<% @characters.each do |char| %>
-							<a href="/characters/play/<%= char.id %>">
-								<li class="list-group-item">
-									<%= "#{char.name} | Lvl. #{char.level}" %>
-								</li>
-							</a>
-						<% end %>
-					</ul>
 
-					<%= link_to 'Criar um personagem', '/characters/new', class: 'btn btn-success mt-2' %>
+		<% if current_account.present? %>
+			<div class="col-md-6">
+				<div class="card card-tibia">
+					<div class="card-title red">
+						Meus personagens
+					</div>
+					<div class="card-body">
+						<small>Clique em um personagem para jogar:</small>
+						<ul class="list-group mt-2">
+							<% @characters.each do |char| %>
+								<a href="/characters/play/<%= char.id %>">
+									<li class="list-group-item">
+										<%= "#{char.name} | Lvl. #{char.level}" %>
+									</li>
+								</a>
+							<% end %>
+						</ul>
+
+						<%= link_to 'Criar um personagem', '/characters/new', class: 'btn btn-success mt-2' %>
+					</div>
 				</div>
 			</div>
-		</div>
+		<% end %>
 	</div>
 </div>
