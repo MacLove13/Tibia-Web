@@ -26,14 +26,10 @@ jobs:
           source /root/.nvm/nvm.sh
 
           nvm install 14
-          rvm use 3.1.2
+          rvm use 3.2.2
           nvm use 14
           
           sudo kill -9 `sudo lsof -t -i:3030`
-
-          # Adjust permissions
-          sudo chown -R $USER tmp
-          sudo chown -R $USER public
 
           # Remove layout
           rake assets:clobber
