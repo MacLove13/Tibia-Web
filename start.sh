@@ -20,6 +20,8 @@ if [ ! -z "$PID" ]; then
   sudo kill -9 $PID
 fi
 
+RAILS_ENV=production bundle exec rake assets:precompile
+
 sudo chown -R $USER tmp
 sudo chown -R $USER public
 
