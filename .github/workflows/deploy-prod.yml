@@ -52,5 +52,7 @@ jobs:
           # Reinicie o servidor web / aplicação conforme necessário
           # Exemplo com Passenger:
           # passenger-config restart-app /path/to/your/app
-          bin/rails s -p 3030 RAILS_ENV=production
+          # bin/rails s -p 3030 RAILS_ENV=production
+
+          bundle exec puma -e production -p 3030
         EOF
