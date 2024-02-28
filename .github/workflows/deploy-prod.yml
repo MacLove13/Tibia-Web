@@ -25,9 +25,9 @@ jobs:
           source /usr/local/rvm/scripts/rvm
           source /root/.nvm/nvm.sh
 
-          nvm install 14
+          nvm install 16
           rvm use 3.2.2
-          nvm use 14
+          nvm use 16
           
           sudo kill -9 `sudo lsof -t -i:3030`
 
