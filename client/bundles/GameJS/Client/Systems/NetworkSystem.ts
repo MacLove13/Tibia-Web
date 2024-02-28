@@ -23,7 +23,7 @@ export class NetworkSystem {
     private Initialized = false;
 
     connect(auth: string) {
-        const url = 'http://localhost:2137';
+        const url = 'http://192.99.177.163:2137';
 
         // this.socket = io.io(url)
         this.socket = io.io(url);
