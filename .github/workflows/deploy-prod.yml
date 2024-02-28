@@ -21,13 +21,39 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
           cd ~/tibia/web
+          source /root/.bashrc
+          source /usr/local/rvm/scripts/rvm
+          source /root/.nvm/nvm.sh
+
+          nvm install 14
+          rvm use 3.1.2
+          nvm use 14
+          
+          sudo kill -9 `sudo lsof -t -i:3030`
+
+          # Adjust permissions
+          sudo chown -R $USER tmp
+          sudo chown -R $USER public
+
+          # Remove layout
+          rake assets:clobber
+          rm -rf public/packs/*
+          rm -R node_modules
+
+          # Update
           git pull
           bundle install
           yarn install --check-files
+
+          # Prepare Front
+          yarn run build
+          RAILS_ENV=production bundle exec rake assets:precompile
+          RAILS_ENV=production bundle exec rake react_on_rails:assets:webpack
+          
           rails db:migrate RAILS_ENV=production
           rails assets:precompile
           # Reinicie o servidor web / aplicação conforme necessário
           # Exemplo com Passenger:
           # passenger-config restart-app /path/to/your/app
-          rails s -p 3030
+          rails s -p 3030 RAILS_ENV=production
         EOF
