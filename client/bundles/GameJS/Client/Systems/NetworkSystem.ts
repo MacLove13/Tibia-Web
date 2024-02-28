@@ -23,6 +23,8 @@ export class NetworkSystem {
     private Initialized = false;
 
     connect(auth: string) {
+
+        console.log("Starting socket connection v0.0.1");
         const url = 'http://192.99.177.163:2137';
 
         // this.socket = io.io(url)
