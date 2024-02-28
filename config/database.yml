@@ -83,4 +83,4 @@ production:
   <<: *default
   database: tibiajs_production
   username: tibiajs
-  password: <%= ENV["TIBIAJS_DATABASE_PASSWORD"] %>
+  password: "Rasd@4sda!!2dsdTib"
