@@ -37,7 +37,7 @@ function Player({ player, canvasRef, renderPlayer, setRenderPlayer }) {
   useEffect(() => {
   	// if (!renderPlayer) return;
   	if (!avatarRef.current || !walkingImageRef.current) {
-      console.log('Images not loaded');
+      // console.log('Images not loaded');
       return;
     }
   	
@@ -64,7 +64,7 @@ function Player({ player, canvasRef, renderPlayer, setRenderPlayer }) {
 
     setRenderPlayer(false);
     setLifeBarPosition({ x: playerX, y: playerY });
-    console.log('Player Renderized')
+    // console.log('Player Renderized')
   }, [renderPlayer]);
 
   return (

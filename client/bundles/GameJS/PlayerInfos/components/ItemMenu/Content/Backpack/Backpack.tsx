@@ -3,42 +3,66 @@ import { useDrag, useDrop } from 'react-dnd';
 import GameInstance from '../../../../../store/GameInit';
 import './Backpack.scss';
 
+interface DropResult {
+  slotId: number; // ou string, dependendo de como você identifica os slots
+}
+
 // import BackpackImage from '../../../../components/Equipment/Images/backpack/default.gif';
 // import Coins100 from './Images/Gold/100.gif';
 
 import Item from './Item/Item';
 
-const EmptySlot = ({ }) => {
+const EmptySlot = ({ slotId }) => {
+  const [, drop] = useDrop({
+    accept: ['ITEM', 'EQUIPPED_ITEM'],
+    drop: () => ({ slotId }),
+  });
 
-	return (
-		<div className="backpack">
-			<div className="slot" />
-		</div>
-	)
+  return (
+    <div ref={drop} className="backpack">
+      <div className="slot" />
+    </div>
+  );
 };
 
 const Backpack = ({ slots, items, uuid }) => {
 	const itemsCount = items.length;
-	let emptySlotsCount = slots - itemsCount;
-	if (emptySlotsCount < 0) emptySlotsCount = 0;
+  let emptySlotsCount = slots - itemsCount;
+  if (emptySlotsCount < 0) emptySlotsCount = 0;
+
 
 	const emptySlotsComponents = [...Array(emptySlotsCount)].map((_, index) => (
-	  <EmptySlot key={`empty-slot-${index}`} />
+	  <EmptySlot key={`empty-slot-${index}`} slotId={index} />
 	));
 
-	const [{ isOver, canDrop }, drop] = useDrop(() => ({
-    accept: ['ITEM', 'EQUIPPED_ITEM'],
-    // canDrop: (item) => item.type === '4',
-    drop: (item) => onPutItem(item),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
-    }),
-  }));
+	const slotPositions = items.reduce((acc, item) => {
+    acc[item.slot] = item; // Assumindo que cada `item` tem uma propriedade `slot` que indica sua posição
+    return acc;
+  }, {});
 
-  const onPutItem = (item) => {
-  	console.log('onPutItem');
-  	console.log(item)
+	const [{ isOver, canDrop }, drop] = useDrop(() => ({
+	  accept: ['ITEM', 'EQUIPPED_ITEM'],
+	  drop: (item, monitor) => {
+	    const dropResult: DropResult | undefined = monitor.getDropResult();
+	    const slotId = dropResult ? dropResult.slotId : null;
+
+	    if (slotId !== null && slotPositions[slotId]) {
+	      console.log('Juntando item'); // Mensagem quando um item é solto sobre outro
+	      // Implemente aqui a lógica para "juntar" os itens ou qualquer outra ação necessária
+	    } else if (slotId !== null) {
+	      onPutItem(item, slotId); // Lógica para colocar o item no slot vazio
+	    }
+	  },
+	  collect: (monitor) => ({
+	    isOver: !!monitor.isOver(),
+	    canDrop: !!monitor.canDrop(),
+	  }),
+	}));
+
+
+  const onPutItem = (item, slotId) => {
+    console.log('onPutItem no slot:', slotId);
+    console.log(item);
 
   	if (item.type == 'EQUIPPED_ITEM') {
   		GameInstance.init.networkSystem.EmitServer("UnequipItem", {

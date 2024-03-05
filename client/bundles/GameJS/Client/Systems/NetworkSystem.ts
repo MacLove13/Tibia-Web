@@ -23,18 +23,18 @@ export class NetworkSystem {
     private Initialized = false;
     private FailToInitialize = false;
 
+    private devServer = true;
+
     connect(auth: string) {
         if (this.FailToInitialize) return;
 
         console.log("Starting socket connection v0.0.1");
-        const url = 'https://192.99.177.163:2137';
+        let url = 'https://192.99.177.163:2137';
 
-        // this.socket = io.io(url)
-        this.socket = io.io(url, { reconnection: false });
+        if (this.devServer)
+            url = 'localhost:2137';
 
-        // {
-        //     withCredentials: true
-        // });
+        this.socket = io.io(url, { transports: ['websocket'], reconnection: false });
 
         this.socket.on('connect_error', (error) => {
             console.error('Connection Error:', error);
@@ -104,11 +104,6 @@ export class NetworkSystem {
     private Setup() {
         this.socket.on("NewCharacters", (data: NewCharacterData[]) => {
             for (var i = 0; i < data.length; i++) {
-
-                console.log("AliveSprites")
-                console.log(data[i].Race)
-                console.log(config.Mobs[data[i].Race].AliveSprites[0])
-
                 var gameObj = new GameObj();
                 gameObj.ID = data[i].ID;
                 gameObj.AddComponent(new PositionComponent(data[i].Position.x, data[i].Position.y, Rotation.Down));
@@ -130,11 +125,6 @@ export class NetworkSystem {
         this.socket.on("PlayerStart", (data: NewCharacterData) => {
             var gameObj = new GameObj();
             gameObj.ID = data.ID;
-
-
-            console.log("AliveSprites")
-            console.log(config.Mobs[data.Race].AliveSprites)
-
             gameObj.AddComponent(new PositionComponent(data.Position.x, data.Position.y, Rotation.Down));
             gameObj.AddComponent(new MovementComponent(data.Speed));
             gameObj.AddComponent(new CharacterAnimationComponent(config.Mobs[data.Race].AliveSprites, 5));
@@ -145,7 +135,6 @@ export class NetworkSystem {
             gameObj.AddComponent(new HealthComponent(data.HP, data.MaxHP));
             gameObj.AddComponent(new CameraComponent());
             this.newEntityList.push(gameObj);
-            console.log("Vocé é um " + data.UClass);
         });
 
         this.socket.on("Game:UpdateMap", (data: any) => {
@@ -173,7 +162,6 @@ export class NetworkSystem {
         });
 
         this.socket.on("SelfHeal", (data: { TargetID; Health; }) => {
-            console.log(data)
             this.entityToModification.push({ ID: data.TargetID, Type: ModType.Heal, Data: data.Health });
         });
 
@@ -285,8 +273,6 @@ export class NetworkSystem {
                 }
 
                 if (this.entityToModification[i].Type === ModType.Heal) {
-
-                    console.log(this.entityToModification[i])
                     var healthComponent = <HealthComponent>gameObjList[j].ComponentList[Componenets.Health];
                     if (healthComponent) {
                         healthComponent.SetHP(this.entityToModification[i].Data);

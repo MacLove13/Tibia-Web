@@ -1,10 +1,18 @@
-<h1>Editing item</h1>
+<div class="container">
+  <div class="card">
+    <div class="card-title">
+      Editing item
+    </div>
 
-<%= render "form", item_template: @item_template %>
+    <div class="card-body">
+      <%= render "form", item_template: @item_template %>
 
-<br>
+      <br>
 
-<div>
-  <%= link_to "Show this item", @item_template %> |
-  <%= link_to "Back to items", item_templates_path %>
+      <div>
+        <%= link_to "Show this item", @item_template, class: 'btn btn-success' %> |
+        <%= link_to "Back to items", item_templates_path %>
+      </div>
+    </div>
+  </div>
 </div>

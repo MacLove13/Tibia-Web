@@ -3,7 +3,7 @@ default: &default
   encoding: unicode
   database: <%= ENV['DB_NAME'] || "tibiajs_development" %>
   username: <%= ENV['DB_USER'] || "postgres" %>
-  password: <%= ENV['DB_PASS'] || "postgres" %>
+  password: <%= ENV['DB_PASS'] || "" %>
   host: <%= ENV['DB_HOST'] || "localhost" %>
   pool: <%= ENV['DB_POOL'] || 15 %>
   port: <%= ENV['DB_PORT'] || 5432 %>

@@ -29,13 +29,10 @@ function GameCanvas({ map, player, playerRef, subscription }) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     draw(grass);
-    console.log('reload canvas')
   }
 
   const draw = (image = null) => {
     if (image == null) return;
-    console.log('draw')
-    console.log(image)
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -60,7 +57,6 @@ function GameCanvas({ map, player, playerRef, subscription }) {
 
     setRenderPlayer(true);
     setCreatedMap(true);
-    console.log('Map renderized')
   };
 
   useEffect(() => {
