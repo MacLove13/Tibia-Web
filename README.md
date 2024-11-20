@@ -9,7 +9,7 @@ This is not a complete server, it only has some basic implementations such as co
 ## Server
 Check out the TypeScript Server Repository.
 
-https://github.com/MacLove13/Tibia-Web
+https://github.com/MacLove13/Tibia-Server
 
 ## Inspirations
 This project served as a beautiful inspiration
